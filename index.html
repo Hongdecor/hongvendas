@@ -151,8 +151,39 @@
   #listaProdutos table td.col-ean { font-family:'Consolas','Monaco',monospace; font-size:11px; color:var(--text-mute); white-space:nowrap; }
   #listaProdutos table td.col-un { text-align:center; font-weight:600; font-size:12px; }
   #listaProdutos table td.col-tam { font-size:12px; color:var(--text-mute); white-space:nowrap; }
+  #listaProdutos table td.col-forn { font-size:12px; color:var(--text-mute); white-space:nowrap; }
   #listaProdutos table td.col-qtd { text-align:right; font-variant-numeric:tabular-nums; }
   #listaProdutos table td.col-preco { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+
+  /* ===== STATUS DO PRODUTO (badges) ===== */
+  .badge-status-ativo { background:#d1fae5; color:#065f46; font-size:10px; padding:3px 8px; border-radius:12px; font-weight:700; display:inline-block; margin-left:6px; }
+  .badge-status-fora { background:#fef3c7; color:#92400e; font-size:10px; padding:3px 8px; border-radius:12px; font-weight:700; display:inline-block; margin-left:6px; }
+  .badge-status-inativo { background:#fee2e2; color:#991b1b; font-size:10px; padding:3px 8px; border-radius:12px; font-weight:700; display:inline-block; margin-left:6px; }
+  .produto-bloqueado { opacity:0.6; }
+  .produto-bloqueado td { background:#fef3c7 !important; }
+
+  /* ===== CHECKBOX DE SELEÇÃO NA LISTA DE PRODUTOS ===== */
+  #listaProdutos table th.col-check, #listaProdutos table td.col-check { width:32px; text-align:center; padding:8px 4px; }
+  #listaProdutos table td.col-check input { width:16px; height:16px; cursor:pointer; }
+  #listaProdutos table th.col-check input { width:16px; height:16px; cursor:pointer; }
+
+  /* ===== BARRA DE AÇÕES EM LOTE (acima da lista) ===== */
+  .barra-lote { display:none; align-items:center; gap:12px; padding:12px 16px; background:var(--bg-panel-alt); border:1px solid var(--border); border-radius:8px; margin-bottom:12px; flex-wrap:wrap; }
+  .barra-lote.ativa { display:flex; }
+  .barra-lote .contador-lote { font-size:13px; font-weight:600; color:var(--text); }
+  .barra-lote .contador-lote strong { color:var(--info); font-size:15px; }
+
+  /* ===== MODAL DE ETIQUETAS EM LOTE ===== */
+  #modalEtiquetasLote .modal-content { width:98%; max-width:1200px; height:95vh; }
+  .etiquetas-folha { display:grid; grid-template-columns:repeat(4, 50mm); gap:4mm; justify-content:center; padding:8mm; background:#fff; }
+  .etiqueta-item { width:50mm; height:30mm; border:1px dashed #ccc; padding:2mm; text-align:center; font-family:Arial, sans-serif; box-sizing:border-box; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#fff; page-break-inside:avoid; }
+  .etiqueta-item .etq-empresa { font-size:7px; font-weight:bold; letter-spacing:.5px; margin-bottom:1mm; }
+  .etiqueta-item .etq-nome { font-size:7px; line-height:1.1; max-height:8mm; overflow:hidden; margin-bottom:1mm; }
+  .etiqueta-item .etq-ref { font-size:6px; color:#555; margin-bottom:1mm; }
+  .etiqueta-item svg { max-width:100%; height:auto; }
+  .etiqueta-item .etq-codigo { font-size:7px; margin-top:1mm; font-family:'Consolas','Monaco',monospace; }
+  .etiquetas-info { font-size:13px; color:var(--text-mute); margin-bottom:12px; text-align:center; }
+  .etiquetas-vazio { text-align:center; padding:40px; color:var(--text-light); }
 
   /* ===== MODAL DE ESTOQUE — BUSCA, CARREGAMENTO E HISTÓRICO ===== */
   .estoque-busca-wrap { display:flex; gap:10px; align-items:flex-end; margin-bottom:12px; }
@@ -178,8 +209,11 @@
   @media print {
     body * { visibility: hidden; }
     #modalComanda, #modalComanda .modal-content, #printSection, #printSection * { visibility: visible; }
-    #modalComanda .modal-content { position: absolute; left: 0; top: 0; width: 100% !important; max-width: 100% !important; height: auto; padding: 0; margin: 0; box-shadow: none; background: #fff !important; }
+    #modalEtiquetasLote, #modalEtiquetasLote .modal-content, #etiquetasPrintArea, #etiquetasPrintArea * { visibility: visible; }
+    #modalComanda .modal-content, #modalEtiquetasLote .modal-content { position: absolute; left: 0; top: 0; width: 100% !important; max-width: 100% !important; height: auto; padding: 0; margin: 0; box-shadow: none; background: #fff !important; }
     #printSection { width: 100% !important; padding: 5mm; font-family: Calibri, Arial, sans-serif; background: #fff !important; color: #000 !important; font-size: 11px; }
+    .etiquetas-folha { padding: 0; gap: 2mm; grid-template-columns:repeat(4, 50mm); }
+    .etiqueta-item { border: 1px dashed #999; }
     .modal-close-btn, .no-print { display: none !important; }
     @page { size: A4 landscape; margin: 5mm; }
   }
@@ -277,6 +311,13 @@
                 <option>Outros</option>
               </select>
             </div>
+            <div class="form-group"><label>Status *</label>
+              <select id="prodStatus">
+                <option value="ativo">Ativo</option>
+                <option value="fora_de_linha">Fora de linha</option>
+                <option value="inativo">Inativo</option>
+              </select>
+            </div>
             <div class="form-group"><label>Unidade *</label>
               <select id="prodUnidade">
                 <option value="UN">UN — Unidade</option>
@@ -318,6 +359,7 @@
           </div>
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
             <button class="btn btn-primary" onclick="salvarProduto()">Salvar Produto</button>
+            <button class="btn btn-success" onclick="salvarProdutoENovo()">✅ Salvar e Lançar Novo</button>
             <button class="btn btn-info btn-sm" onclick="abrirModalFornecedorRapido()">➕ Cadastrar Fornecedor</button>
             <button class="btn btn-info btn-sm" onclick="abrirModalEtiqueta()">🖨️ Etiqueta</button>
           </div>
@@ -329,8 +371,14 @@
           <div class="form-group" style="flex:1; min-width:160px;"><label>Fornecedor</label><select id="filtroProdFornecedor" onchange="renderProdutos(1)"><option value="">Todos</option></select></div>
           <div class="form-group" style="flex:1; min-width:160px;"><label>Categoria</label><select id="filtroProdCategoria" onchange="renderProdutos(1)"><option value="">Todas</option><option>Papel de Parede</option><option>Tapete</option><option>Acabamento</option><option>Móveis</option><option>Infantil</option><option>Outros</option></select></div>
           <div class="form-group" style="flex:0 0 auto; min-width:150px;"><label>Estoque</label><select id="filtroProdEstoque" onchange="renderProdutos(1)"><option value="todos">Todos</option><option value="baixo">Baixo (≤ mín.)</option><option value="zerado">Zerado</option><option value="sobencomenda">Pedidos</option></select></div>
+          <div class="form-group" style="flex:0 0 auto; min-width:150px;"><label>Status</label><select id="filtroProdStatus" onchange="renderProdutos(1)"><option value="todos">Todos</option><option value="ativo">Ativo</option><option value="fora_de_linha">Fora de linha</option><option value="inativo">Inativo</option></select></div>
           <button class="btn btn-sm" style="background:var(--bg-panel-alt);color:var(--text)" onclick="limparFiltrosProduto()">Limpar Filtros</button>
           <span id="contadorFiltroProd" style="font-size:12px; color:var(--text-mute); margin-left:auto;"></span>
+        </div>
+        <div class="barra-lote" id="barraLoteProdutos">
+          <span class="contador-lote"><strong id="contadorSelecionados">0</strong> produto(s) selecionado(s)</span>
+          <button class="btn btn-primary btn-sm" onclick="abrirEtiquetasLote()">🖨️ Imprimir Etiquetas Selecionadas</button>
+          <button class="btn btn-sm" style="background:var(--bg-panel-alt);color:var(--text)" onclick="limparSelecaoProdutos()">Limpar Seleção</button>
         </div>
         <div id="listaProdutos"></div>
         <div class="pagination" id="pagProdutos"></div>
@@ -401,7 +449,6 @@
       </div>
     </div>
 
-    <!-- ============ SEÇÃO FORNECEDORES (NOVA) ============ -->
     <div class="section" id="sec-fornecedores">
       <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
         <button class="btn btn-success" onclick="novoFornecedor()">➕ Novo Fornecedor</button>
@@ -741,7 +788,6 @@
   </div>
 </div>
 
-<!-- NOVO: Modal de edição de movimentação de caixa (substitui prompt) -->
 <div class="modal" id="modalEditarCaixa">
   <div class="modal-content" style="width:500px;">
     <button class="modal-close-btn" onclick="fecharModalEditarCaixa()">×</button>
@@ -816,6 +862,19 @@
     </div>
   </div>
 </div>
+
+<div class="modal" id="modalEtiquetasLote">
+  <div class="modal-content">
+    <button class="modal-close-btn no-print" onclick="fecharModalEtiquetasLote()">×</button>
+    <h3 class="no-print">🖨️ Impressão de Etiquetas em Lote</h3>
+    <div class="etiquetas-info no-print" id="etiquetasInfoLote"></div>
+    <div id="etiquetasPrintArea"></div>
+    <div class="modal-actions no-print">
+      <button class="btn btn-sm" style="background:var(--bg-panel-alt); color:var(--text)" onclick="fecharModalEtiquetasLote()">Fechar</button>
+      <button class="btn btn-primary" onclick="window.print()">🖨️ Imprimir Etiquetas</button>
+    </div>
+  </div>
+</div>
 <script>
 /* =========================================================
    ESTADO GLOBAL
@@ -830,7 +889,9 @@ let filtroStatusPedidos = 'todos';
 let relListaCache = [];
 let editandoProdutoId = null, editandoClienteId = null, editandoUnidadeId = null, editandoFornecedorId = null;
 let buscaCaixa = '';
+let produtosSelecionadosEtiqueta = [];
 const ITENS_POR_PAGINA = 10;
+const ITENS_POR_PAGINA_PRODUTOS = 20;
 
 const GUIAS_DISPONIVEIS = [
   { id: 'dashboard', label: '📊 Dashboard' },
@@ -880,12 +941,14 @@ function showAlert(el, msg, type) {
   clearTimeout(el._hideTimer);
   el._hideTimer = setTimeout(() => { el.style.display = 'none'; }, 3500);
 }
-function paginar(lista, pagina) {
-  const ini = (pagina - 1) * ITENS_POR_PAGINA;
-  return lista.slice(ini, ini + ITENS_POR_PAGINA);
+function paginar(lista, pagina, porPagina) {
+  const pp = porPagina || ITENS_POR_PAGINA;
+  const ini = (pagina - 1) * pp;
+  return lista.slice(ini, ini + pp);
 }
-function renderPaginacao(total, paginaAtual, containerId, callback) {
-  const totalPag = Math.ceil(total / ITENS_POR_PAGINA);
+function renderPaginacao(total, paginaAtual, containerId, callback, porPagina) {
+  const pp = porPagina || ITENS_POR_PAGINA;
+  const totalPag = Math.ceil(total / pp);
   const el = document.getElementById(containerId);
   if (!el) return;
   if (totalPag <= 1) { el.innerHTML = ''; return; }
@@ -914,6 +977,31 @@ function ordenarProdutosPorReferencia(lista) {
 }
 
 /* =========================================================
+   STATUS DO PRODUTO (badge)
+   ========================================================= */
+function normalizarStatusProduto(p) {
+  const s = (p && p.statusProduto) ? String(p.statusProduto) : 'ativo';
+  if (s === 'fora_de_linha' || s === 'inativo' || s === 'ativo') return s;
+  return 'ativo';
+}
+function labelStatusProduto(p) {
+  const s = normalizarStatusProduto(p);
+  if (s === 'fora_de_linha') return 'Fora de linha';
+  if (s === 'inativo') return 'Inativo';
+  return 'Ativo';
+}
+function badgeStatusProduto(p) {
+  const s = normalizarStatusProduto(p);
+  if (s === 'fora_de_linha') return '<span class="badge-status-fora">FORA DE LINHA</span>';
+  if (s === 'inativo') return '<span class="badge-status-inativo">INATIVO</span>';
+  return '<span class="badge-status-ativo">ATIVO</span>';
+}
+function produtoDisponivelParaVenda(p) {
+  const s = normalizarStatusProduto(p);
+  return s === 'ativo';
+}
+
+/* =========================================================
    GERAÇÃO DE EAN INTERNO (prefixo 200 + dígito verificador EAN-13)
    ========================================================= */
 function calcularDigitoEAN13(base12) {
@@ -933,8 +1021,7 @@ function gerarEANInternoUnico() {
     for (let i = 0; i < 9; i++) base12 += Math.floor(Math.random() * 10);
     const digito = calcularDigitoEAN13(base12);
     const ean = base12 + digito;
-    const duplicado = produtosCache.some(p => (p.ean || '') === ean) ||
-                      (typeof produtosPublicosCache !== 'undefined' && produtosPublicosCache.some(p => (p.ean || '') === ean));
+    const duplicado = produtosCache.some(p => (p.ean || '') === ean);
     if (!duplicado) return ean;
   }
   return '200' + String(Date.now()).slice(-9).padStart(9, '0') + '0';
@@ -1227,6 +1314,7 @@ function limparFormProduto(fechar) {
   document.getElementById('prodEstoque').value = '0';
   document.getElementById('prodMin').value = '5';
   document.getElementById('prodUnidade').value = 'UN';
+  document.getElementById('prodStatus').value = 'ativo';
   document.getElementById('prodSobEncomenda').checked = false;
   editandoProdutoId = null;
   document.getElementById('tituloFormProduto').textContent = 'Cadastrar Produto';
@@ -1262,6 +1350,8 @@ function salvarProduto() {
   if (dup && !confirm(`⚠️ Já existe um produto com nome idêntico (${dup.nome}). Tem certeza que não é duplicidade?`)) return;
 
   const eanInterno = /^200/.test(ean) && !ean.startsWith('2000');
+  const statusProduto = document.getElementById('prodStatus').value || 'ativo';
+  const agora = new Date().toISOString();
 
   const dados = {
     sku, nome, categoria,
@@ -1271,14 +1361,15 @@ function salvarProduto() {
     venda: parseFloat(document.getElementById('prodVenda').value) || 0,
     min: parseInt(document.getElementById('prodMin').value) || 5,
     sobEncomenda: document.getElementById('prodSobEncomenda').checked,
+    statusProduto: statusProduto,
     ncm: document.getElementById('prodNcm').value.trim(),
     ean: ean,
     eanInterno: eanInterno,
     dim: document.getElementById('prodDim').value.trim(),
     tamanho: document.getElementById('prodTam').value.trim(),
-    atualizadoEm: new Date().toISOString()
+    atualizadoEm: agora
   };
-  const publico = { sku, nome, categoria, unidade: dados.unidade, fornecedorId: dados.fornecedorId, venda: dados.venda, min: dados.min, sobEncomenda: dados.sobEncomenda, ean: dados.ean, eanInterno: dados.eanInterno, tamanho: dados.tamanho, atualizadoEm: dados.atualizadoEm };
+  const publico = { sku, nome, categoria, unidade: dados.unidade, fornecedorId: dados.fornecedorId, venda: dados.venda, min: dados.min, sobEncomenda: dados.sobEncomenda, statusProduto: dados.statusProduto, ean: dados.ean, eanInterno: dados.eanInterno, tamanho: dados.tamanho, atualizadoEm: agora };
 
   const batch = db.batch();
   if (editandoProdutoId) {
@@ -1293,7 +1384,9 @@ function salvarProduto() {
     }).catch(err => showAlert(document.getElementById('alertProduto'), 'Erro: ' + err.message, 'error'));
   } else {
     dados.estoque = parseInt(document.getElementById('prodEstoque').value) || 0;
+    dados.criadoEm = agora;
     publico.estoque = dados.estoque;
+    publico.criadoEm = agora;
     const ref = db.collection('produtos').doc();
     batch.set(ref, dados);
     batch.set(db.collection('produtos_publicos').doc(ref.id), publico);
@@ -1310,30 +1403,33 @@ function renderProdutos(pagina = 1) {
   const fForn = document.getElementById('filtroProdFornecedor')?.value || '';
   const fCat = document.getElementById('filtroProdCategoria')?.value || '';
   const fEst = document.getElementById('filtroProdEstoque')?.value || 'todos';
+  const fStatus = document.getElementById('filtroProdStatus')?.value || 'todos';
   let list = produtosCache.slice();
   if (fForn) list = list.filter(p => p.fornecedorId === fForn);
   if (fCat) list = list.filter(p => p.categoria === fCat);
   if (fEst === 'baixo') list = list.filter(p => p.estoque > 0 && p.estoque <= p.min);
   else if (fEst === 'zerado') list = list.filter(p => p.estoque <= 0);
   else if (fEst === 'sobencomenda') list = list.filter(p => p.sobEncomenda);
+  if (fStatus !== 'todos') list = list.filter(p => normalizarStatusProduto(p) === fStatus);
   if (busca) list = list.filter(p => (p.nome||'').toLowerCase().includes(busca) || (p.sku||'').toLowerCase().includes(busca) || (p.ean||'').toLowerCase().includes(busca));
   list = ordenarProdutosPorReferencia(list);
   const cont = document.getElementById('contadorFiltroProd');
   if (cont) cont.textContent = `${list.length} produto(s) no filtro atual`;
   const admin = isAdmin() || isEstoquista();
   const el = document.getElementById('listaProdutos');
-  if (!list.length) { el.innerHTML = '<div class="empty">Nenhum produto com os filtros atuais.</div>'; document.getElementById('pagProdutos').innerHTML = ''; return; }
-  const paginados = paginar(list, pagina);
-  const startNum = (pagina - 1) * ITENS_POR_PAGINA;
+  if (!list.length) { el.innerHTML = '<div class="empty">Nenhum produto com os filtros atuais.</div>'; document.getElementById('pagProdutos').innerHTML = ''; atualizarBarraLote(); return; }
+  const paginados = paginar(list, pagina, ITENS_POR_PAGINA_PRODUTOS);
+  const startNum = (pagina - 1) * ITENS_POR_PAGINA_PRODUTOS;
   el.innerHTML = `<div class="table-wrapper"><table><thead><tr>
+    <th class="col-check"><input type="checkbox" id="checkTodosProdutos" onchange="selecionarTodosProdutos(this.checked)"></th>
     <th class="col-num">Nº</th>
     <th class="col-ref">Referência</th>
     <th>Descrição / Produto</th>
     <th>Código de Barras</th>
     <th class="col-un">Un.</th>
     <th class="col-tam">Tamanho</th>
+    <th class="col-forn">Fornecedor</th>
     <th class="col-qtd">Qtd</th>
-    ${admin?'<th class="col-preco">Custo</th>':''}
     <th class="col-preco">Venda</th>
     <th>Ações</th></tr></thead><tbody>
     ${paginados.map((p, idx) => {
@@ -1341,15 +1437,19 @@ function renderProdutos(pagina = 1) {
       const badge = p.estoque <= 0 ? '<span class="badge badge-out">ZERADO</span>' : p.estoque <= p.min ? '<span class="badge badge-low">BAIXO</span>' : '<span class="badge badge-ok">OK</span>';
       const sob = p.sobEncomenda ? '<br><small style="color:var(--info); font-weight:bold;">Pedidos</small>' : '';
       const interno = p.eanInterno ? '<span class="badge-interno">INTERNO</span>' : '';
-      return `<tr>
+      const f = fornecedoresCache.find(x => x.id === p.fornecedorId);
+      const fora = normalizarStatusProduto(p) !== 'ativo';
+      const sel = produtosSelecionadosEtiqueta.includes(p.id) ? 'checked' : '';
+      return `<tr class="${fora ? 'produto-bloqueado' : ''}">
+        <td class="col-check"><input type="checkbox" ${sel} onchange="toggleSelecaoProduto('${p.id}', this.checked)"></td>
         <td class="col-num">${num}</td>
         <td class="col-ref">${escapeHtml(p.sku||'')}</td>
-        <td><strong style="cursor:pointer; color:var(--info); text-decoration:underline;" onclick="abrirDetalhesProduto('${p.id}')">${escapeHtml(p.nome)}</strong>${sob}</td>
+        <td><strong style="cursor:pointer; color:var(--info); text-decoration:underline;" onclick="abrirDetalhesProduto('${p.id}')">${escapeHtml(p.nome)}</strong> ${badgeStatusProduto(p)}${sob}</td>
         <td class="col-ean">${escapeHtml(p.ean||'-')}${interno}</td>
         <td class="col-un">${escapeHtml(p.unidade||'UN')}</td>
         <td class="col-tam">${escapeHtml(p.tamanho||'-')}</td>
+        <td class="col-forn">${f ? escapeHtml(f.nome) : '-'}</td>
         <td class="col-qtd">${p.estoque} ${badge}</td>
-        ${admin ? `<td class="col-preco">R$ ${formatarMoeda(p.custo||0)}</td>` : ''}
         <td class="col-preco">R$ ${formatarMoeda(p.venda||0)}</td>
         <td>
           <button class="btn btn-info btn-sm" onclick="abrirEtiquetaPorId('${p.id}')" title="Etiqueta">🖨️</button>
@@ -1357,13 +1457,49 @@ function renderProdutos(pagina = 1) {
           <button class="btn btn-danger btn-sm" onclick="excluirProduto('${p.id}')">🗑️</button>
         </td></tr>`;
     }).join('')}</tbody></table></div>`;
-  renderPaginacao(list.length, pagina, 'pagProdutos', 'renderProdutos');
+  renderPaginacao(list.length, pagina, 'pagProdutos', 'renderProdutos', ITENS_POR_PAGINA_PRODUTOS);
+  atualizarBarraLote();
+}
+function toggleSelecaoProduto(id, marcado) {
+  if (marcado) { if (!produtosSelecionadosEtiqueta.includes(id)) produtosSelecionadosEtiqueta.push(id); }
+  else { produtosSelecionadosEtiqueta = produtosSelecionadosEtiqueta.filter(x => x !== id); }
+  atualizarBarraLote();
+}
+function selecionarTodosProdutos(marcado) {
+  const checks = document.querySelectorAll('#listaProdutos tbody input[type="checkbox"]');
+  checks.forEach(c => {
+    const tr = c.closest('tr');
+    const btn = tr.querySelector('button[onclick^="editarProduto"]');
+    if (!btn) return;
+    const m = btn.getAttribute('onclick').match(/'([^']+)'/);
+    if (!m) return;
+    const id = m[1];
+    c.checked = marcado;
+    if (marcado) { if (!produtosSelecionadosEtiqueta.includes(id)) produtosSelecionadosEtiqueta.push(id); }
+    else { produtosSelecionadosEtiqueta = produtosSelecionadosEtiqueta.filter(x => x !== id); }
+  });
+  atualizarBarraLote();
+}
+function limparSelecaoProdutos() {
+  produtosSelecionadosEtiqueta = [];
+  document.querySelectorAll('#listaProdutos tbody input[type="checkbox"]').forEach(c => c.checked = false);
+  const chk = document.getElementById('checkTodosProdutos'); if (chk) chk.checked = false;
+  atualizarBarraLote();
+}
+function atualizarBarraLote() {
+  const barra = document.getElementById('barraLoteProdutos');
+  const cont = document.getElementById('contadorSelecionados');
+  if (!barra || !cont) return;
+  const n = produtosSelecionadosEtiqueta.length;
+  cont.textContent = n;
+  barra.classList.toggle('ativa', n > 0);
 }
 function limparFiltrosProduto() {
   document.getElementById('buscaProduto').value = '';
   document.getElementById('filtroProdFornecedor').value = '';
   document.getElementById('filtroProdCategoria').value = '';
   document.getElementById('filtroProdEstoque').value = 'todos';
+  const fs = document.getElementById('filtroProdStatus'); if (fs) fs.value = 'todos';
   renderProdutos(1);
 }
 function consultarProdutoPorBipe(codigo) {
@@ -1383,7 +1519,7 @@ function abrirDetalhesProduto(id) {
   document.getElementById('tituloDetalhes').textContent = 'Detalhes do Produto';
   document.getElementById('conteudoDetalhes').innerHTML = `
     <div class="form-block-title">Dados</div>
-    <p><b>Nome:</b> ${escapeHtml(p.nome)}</p>
+    <p><b>Nome:</b> ${escapeHtml(p.nome)} ${badgeStatusProduto(p)}</p>
     <p><b>SKU:</b> ${escapeHtml(p.sku)}</p>
     <p><b>Categoria:</b> ${escapeHtml(p.categoria||'-')}</p>
     <p><b>Unidade:</b> ${escapeHtml(p.unidade||'-')}</p>
@@ -1396,6 +1532,9 @@ function abrirDetalhesProduto(id) {
     <p><b>Pedidos:</b> ${p.sobEncomenda?'Sim':'Não'}</p>
     <div class="form-block-title">Fiscal</div>
     <p><b>NCM:</b> ${escapeHtml(p.ncm||'-')} | <b>Cód. Barras:</b> ${escapeHtml(p.ean||'-')}${p.eanInterno?' <span class="badge-interno">INTERNO</span>':''} | <b>Dimensões Emb.:</b> ${escapeHtml(p.dim||'-')}</p>
+    <div class="form-block-title">Datas</div>
+    <p><b>Cadastrado em:</b> ${p.criadoEm ? formatarDataHoraBR(p.criadoEm) : '—'}</p>
+    <p><b>Última atualização:</b> ${p.atualizadoEm ? formatarDataHoraBR(p.atualizadoEm) : '—'}</p>
   `;
   document.getElementById('modalDetalhes').classList.add('active');
 }
@@ -1408,6 +1547,7 @@ function editarProduto(id) {
   document.getElementById('prodSku').value = p.sku || '';
   document.getElementById('prodNome').value = p.nome || '';
   document.getElementById('prodCategoria').value = p.categoria || '';
+  document.getElementById('prodStatus').value = normalizarStatusProduto(p);
   const un = (p.unidade || 'UN').toUpperCase();
   const selUn = document.getElementById('prodUnidade');
   if ([...selUn.options].some(o => o.value === un)) selUn.value = un;
@@ -1430,7 +1570,11 @@ function excluirProduto(id) {
     const batch = db.batch();
     batch.delete(db.collection('produtos').doc(id));
     batch.delete(db.collection('produtos_publicos').doc(id));
-    batch.commit().then(() => registrarAuditoria('Exclusão Produto', p.nome));
+    batch.commit().then(() => {
+      produtosSelecionadosEtiqueta = produtosSelecionadosEtiqueta.filter(x => x !== id);
+      atualizarBarraLote();
+      registrarAuditoria('Exclusão Produto', p.nome);
+    });
   });
 }
 
@@ -1991,11 +2135,14 @@ function renderBuscaProdutos(pagina) {
   if (!list.length) { el.innerHTML = '<div class="empty">Nenhum produto encontrado.</div>'; document.getElementById('pagBuscaProduto').innerHTML = ''; return; }
   const paginados = paginar(list, pagina);
   el.innerHTML = paginados.map(p => {
+    const disponivel = produtoDisponivelParaVenda(p);
     const esg = p.estoque <= 0 && !p.sobEncomenda;
-    const badge = p.estoque <= 0 ? (p.sobEncomenda ? '<span style="color:var(--info);font-size:11px;font-weight:bold;">[PEDIDOS]</span>' : '<span style="color:red">(ESGOTADO)</span>') : `<span style="color:gray">(Est: ${p.estoque})</span>`;
-    return `<div style="padding:12px; border-bottom:1px solid var(--border-light); ${esg?'opacity:0.6;':'cursor:pointer;'}" ${esg?'':`onclick="adicionarItemPorId('${p.id}'); fecharBuscaProduto();"`}>
-      <strong>${escapeHtml(p.nome)}</strong> ${badge}
+    const badgeEst = p.estoque <= 0 ? (p.sobEncomenda ? '<span style="color:var(--info);font-size:11px;font-weight:bold;">[PEDIDOS]</span>' : '<span style="color:red">(ESGOTADO)</span>') : `<span style="color:gray">(Est: ${p.estoque})</span>`;
+    const bloqueado = !disponivel || esg;
+    return `<div style="padding:12px; border-bottom:1px solid var(--border-light); ${bloqueado?'opacity:0.55;':'cursor:pointer;'}" ${bloqueado?'':`onclick="adicionarItemPorId('${p.id}'); fecharBuscaProduto();"`}>
+      <strong>${escapeHtml(p.nome)}</strong> ${badgeEst} ${badgeStatusProduto(p)}
       <br><small>${escapeHtml(p.sku)} | ${escapeHtml(p.categoria||'-')} | R$ ${formatarMoeda(p.venda||0)}</small>
+      ${!disponivel ? '<br><small style="color:var(--danger); font-weight:bold;">⛔ Produto não disponível para venda</small>' : ''}
     </div>`;
   }).join('');
   renderPaginacao(list.length, pagina, 'pagBuscaProduto', 'renderBuscaProdutos');
@@ -2007,13 +2154,16 @@ function adicionarPorBipagem(codigo) {
     (x.ean||'').toLowerCase() === codigo.toLowerCase()
   );
   if (!p) return alert('Produto não encontrado (SKU ou EAN).');
+  if (!produtoDisponivelParaVenda(p)) return alert(`⛔ Produto "${p.nome}" está ${labelStatusProduto(p).toLowerCase()} e não pode ser vendido.`);
   if (p.estoque <= 0 && !p.sobEncomenda) return alert('Produto esgotado.');
   adicionarItemPorId(p.id);
   document.getElementById('biparProduto').value = '';
 }
 function adicionarItemPorId(id) {
   const prod = produtosCache.find(p => p.id === id);
-  if (!prod || (prod.estoque <= 0 && !prod.sobEncomenda)) return;
+  if (!prod) return;
+  if (!produtoDisponivelParaVenda(prod)) return alert(`⛔ Produto "${prod.nome}" está ${labelStatusProduto(prod).toLowerCase()} e não pode ser vendido.`);
+  if (prod.estoque <= 0 && !prod.sobEncomenda) return;
   const ex = editandoPedidoItens.find(i => i.produtoId === id);
   if (ex) ex.qtd += 1;
   else editandoPedidoItens.push({
@@ -2109,6 +2259,10 @@ async function salvarPedido(finalizar) {
   if (!clienteId) return alert('Selecione o cliente.');
   if (!editandoPedidoItens.length) return alert('Adicione itens.');
   if (finalizar && !unidadeId) return alert('Selecione a Loja/Unidade.');
+  for (const it of editandoPedidoItens) {
+    const p = produtosCache.find(x => x.id === it.produtoId);
+    if (p && !produtoDisponivelParaVenda(p)) return alert(`⛔ O produto "${p.nome}" está ${labelStatusProduto(p).toLowerCase()} e não pode ser vendido. Remova-o do pedido.`);
+  }
   const cortesiaSemMotivo = editandoPagamentos.find(p => p.forma === 'Crédito Loja' && parseFloat(p.valor) > 0 && !(p.motivoCortesia||'').trim());
   if (cortesiaSemMotivo) return alert('Informe o motivo da cortesia.');
   const calc = calcularTotalPedido();
@@ -2647,8 +2801,6 @@ function salvarCaixa() {
     .then(() => { registrarAuditoria('Mov. Caixa', `${tipo.toUpperCase()} | R$ ${formatarMoeda(valor)}`); fecharModalCaixa(); alert('✅ Salvo!'); return sa.delete(); })
     .catch(() => { document.getElementById('alertCaixa').className = 'alert-box error'; document.getElementById('alertCaixa').textContent = 'Senha incorreta.'; document.getElementById('alertCaixa').style.display = 'block'; return sa.delete().catch(()=>{}); });
 }
-
-/* NOVO: Edição de caixa via modal (sem prompt) */
 function editarMovCaixa(id) {
   const c = caixaCache.find(x => x.id === id); if (!c) return;
   document.getElementById('editCaixaId').value = id;
@@ -2680,7 +2832,6 @@ function salvarEdicaoCaixa() {
     alert('✅ Movimentação atualizada!');
   }).catch(err => showAlert(document.getElementById('alertEditarCaixa'), 'Erro: ' + err.message, 'error'));
 }
-
 function excluirMovCaixa(id) {
   solicitarAutorizacao('Excluir Mov.', 'Digite a senha do gestor.', () => {
     db.collection('caixa').doc(id).delete().then(() => { registrarAuditoria('Exclusão Caixa', id); alert('✅ Excluído!'); });
@@ -2952,18 +3103,20 @@ function exportarProdutosXLSX() {
   const fForn = document.getElementById('filtroProdFornecedor')?.value || '';
   const fCat = document.getElementById('filtroProdCategoria')?.value || '';
   const fEst = document.getElementById('filtroProdEstoque')?.value || 'todos';
+  const fStatus = document.getElementById('filtroProdStatus')?.value || 'todos';
   let list = produtosCache.slice();
   if (fForn) list = list.filter(p => p.fornecedorId === fForn);
   if (fCat) list = list.filter(p => p.categoria === fCat);
   if (fEst === 'baixo') list = list.filter(p => p.estoque > 0 && p.estoque <= p.min);
   else if (fEst === 'zerado') list = list.filter(p => p.estoque <= 0);
   else if (fEst === 'sobencomenda') list = list.filter(p => p.sobEncomenda);
+  if (fStatus !== 'todos') list = list.filter(p => normalizarStatusProduto(p) === fStatus);
   if (busca) list = list.filter(p => (p.nome||'').toLowerCase().includes(busca) || (p.sku||'').toLowerCase().includes(busca) || (p.ean||'').toLowerCase().includes(busca));
   list = ordenarProdutosPorReferencia(list);
   if (!list.length) return alert('Nenhum produto com os filtros atuais.');
   exportarXLSX(list.map(p => {
     const f = fornecedoresCache.find(x => x.id === p.fornecedorId);
-    return { SKU: p.sku, Nome: p.nome, Categoria: p.categoria||'', Fornecedor: f?f.nome:'', Unidade: p.unidade||'', Tamanho: p.tamanho||'', 'Código de Barras': p.ean||'', Custo: p.custo||0, Venda: p.venda||0, Estoque: p.estoque||0, 'Estoque Mínimo': p.min||0, 'Pedidos': p.sobEncomenda?'Sim':'Não' };
+    return { SKU: p.sku, Nome: p.nome, Categoria: p.categoria||'', Fornecedor: f?f.nome:'', Unidade: p.unidade||'', Tamanho: p.tamanho||'', 'Código de Barras': p.ean||'', Status: labelStatusProduto(p), Custo: p.custo||0, Venda: p.venda||0, Estoque: p.estoque||0, 'Estoque Mínimo': p.min||0, 'Pedidos': p.sobEncomenda?'Sim':'Não' };
   }), 'produtos_filtrados', 'Produtos');
 }
 function exportarClientesXLSX() {
@@ -3095,11 +3248,10 @@ function lancarEstoque() {
       data: new Date().toISOString(), usuario: usuarioLogado.nome
     });
     registrarAuditoria('Entrada Estoque', `${prod ? prod.nome : prodId} | +${qtd} | Nota: ${nota}`);
-    fecharModalEstoque();
     document.getElementById('entQtd').value = '';
     document.getElementById('entNota').value = '';
     document.getElementById('entObs').value = '';
-    alert('✅ Entrada lançada com sucesso!');
+    showAlert(document.getElementById('alertEstoqueModal'), '✅ Entrada lançada com sucesso!', 'success');
   }).catch(err => showAlert(document.getElementById('alertEstoqueModal'), 'Erro: ' + err.message, 'error'));
 }
 
@@ -3224,11 +3376,14 @@ function renderBuscaProdutos(pagina) {
   if (!list.length) { el.innerHTML = '<div class="empty">Nenhum produto encontrado.</div>'; document.getElementById('pagBuscaProduto').innerHTML = ''; return; }
   const paginados = paginar(list, pagina);
   el.innerHTML = paginados.map(p => {
+    const disponivel = produtoDisponivelParaVenda(p);
     const esg = p.estoque <= 0 && !p.sobEncomenda;
-    const badge = p.estoque <= 0 ? (p.sobEncomenda ? '<span style="color:var(--info);font-size:11px;font-weight:bold;">[PEDIDOS]</span>' : '<span style="color:red">(ESGOTADO)</span>') : `<span style="color:gray">(Est: ${p.estoque})</span>`;
-    return `<div style="padding:12px; border-bottom:1px solid var(--border-light); ${esg?'opacity:0.6;':'cursor:pointer;'}" ${esg?'':`onclick="adicionarItemPorId('${p.id}'); fecharBuscaProduto();"`}>
-      <strong>${escapeHtml(p.nome)}</strong> ${badge}
+    const badgeEst = p.estoque <= 0 ? (p.sobEncomenda ? '<span style="color:var(--info);font-size:11px;font-weight:bold;">[PEDIDOS]</span>' : '<span style="color:red">(ESGOTADO)</span>') : `<span style="color:gray">(Est: ${p.estoque})</span>`;
+    const bloqueado = !disponivel || esg;
+    return `<div style="padding:12px; border-bottom:1px solid var(--border-light); ${bloqueado?'opacity:0.55;':'cursor:pointer;'}" ${bloqueado?'':`onclick="adicionarItemPorId('${p.id}'); fecharBuscaProduto();"`}>
+      <strong>${escapeHtml(p.nome)}</strong> ${badgeEst} ${badgeStatusProduto(p)}
       <br><small>${escapeHtml(p.sku)} | ${escapeHtml(p.categoria||'-')} | R$ ${formatarMoeda(p.venda||0)}</small>
+      ${!disponivel ? '<br><small style="color:var(--danger); font-weight:bold;">⛔ Produto não disponível para venda</small>' : ''}
     </div>`;
   }).join('');
   renderPaginacao(list.length, pagina, 'pagBuscaProduto', 'renderBuscaProdutos');
@@ -3240,13 +3395,16 @@ function adicionarPorBipagem(codigo) {
     (x.ean||'').toLowerCase() === codigo.toLowerCase()
   );
   if (!p) return alert('Produto não encontrado (SKU ou EAN).');
+  if (!produtoDisponivelParaVenda(p)) return alert(`⛔ Produto "${p.nome}" está ${labelStatusProduto(p).toLowerCase()} e não pode ser vendido.`);
   if (p.estoque <= 0 && !p.sobEncomenda) return alert('Produto esgotado.');
   adicionarItemPorId(p.id);
   document.getElementById('biparProduto').value = '';
 }
 function adicionarItemPorId(id) {
   const prod = produtosCache.find(p => p.id === id);
-  if (!prod || (prod.estoque <= 0 && !prod.sobEncomenda)) return;
+  if (!prod) return;
+  if (!produtoDisponivelParaVenda(prod)) return alert(`⛔ Produto "${prod.nome}" está ${labelStatusProduto(prod).toLowerCase()} e não pode ser vendido.`);
+  if (prod.estoque <= 0 && !prod.sobEncomenda) return;
   const ex = editandoPedidoItens.find(i => i.produtoId === id);
   if (ex) ex.qtd += 1;
   else editandoPedidoItens.push({
@@ -3342,6 +3500,10 @@ async function salvarPedido(finalizar) {
   if (!clienteId) return alert('Selecione o cliente.');
   if (!editandoPedidoItens.length) return alert('Adicione itens.');
   if (finalizar && !unidadeId) return alert('Selecione a Loja/Unidade.');
+  for (const it of editandoPedidoItens) {
+    const p = produtosCache.find(x => x.id === it.produtoId);
+    if (p && !produtoDisponivelParaVenda(p)) return alert(`⛔ O produto "${p.nome}" está ${labelStatusProduto(p).toLowerCase()} e não pode ser vendido. Remova-o do pedido.`);
+  }
   const cortesiaSemMotivo = editandoPagamentos.find(p => p.forma === 'Crédito Loja' && parseFloat(p.valor) > 0 && !(p.motivoCortesia||'').trim());
   if (cortesiaSemMotivo) return alert('Informe o motivo da cortesia.');
   const calc = calcularTotalPedido();
@@ -3945,7 +4107,7 @@ function imprimirRecibo(id) {
 }
 
 /* =========================================================
-   ETIQUETAS (Code 128 para código interno, EAN13 para EAN de fabricante)
+   ETIQUETAS INDIVIDUAIS
    ========================================================= */
 function abrirEtiquetaPorId(id) {
   const p = produtosCache.find(x => x.id === id);
@@ -3983,6 +4145,73 @@ function imprimirEtiqueta() {
   win.document.write(`<html><head><title>Etiqueta</title></head><body onload="window.print();window.close()">${conteudo}</body></html>`);
   win.document.close();
 }
+
+/* =========================================================
+   ETIQUETAS EM LOTE (20 por folha A4 — 4 colunas × 5 linhas)
+   ========================================================= */
+function abrirEtiquetasLote() {
+  if (!produtosSelecionadosEtiqueta.length) return alert('Selecione ao menos um produto para imprimir etiquetas.');
+  const produtos = produtosSelecionadosEtiqueta.map(id => produtosCache.find(p => p.id === id)).filter(Boolean);
+  if (!produtos.length) return alert('Nenhum produto válido selecionado.');
+  
+  const total = produtos.length;
+  const paginas = Math.ceil(total / 20);
+  document.getElementById('etiquetasInfoLote').textContent = `${total} etiqueta(s) em ${paginas} folha(s) A4 (20 por folha).`;
+
+  const area = document.getElementById('etiquetasPrintArea');
+  area.innerHTML = '';
+
+  let html = '<div class="etiquetas-folha">';
+  produtos.forEach((p, i) => {
+    const ean = p.ean || gerarEANInternoUnico();
+    const usarCode128 = p.eanInterno || !/^\d{13}$/.test(ean);
+    html += `
+      <div class="etiqueta-item">
+        <div class="etq-empresa">HONG DECOR</div>
+        <div class="etq-nome">${escapeHtml(p.nome)}</div>
+        <div class="etq-ref">Ref: ${escapeHtml(p.sku||'')}</div>
+        <svg id="barcodeLote${i}"></svg>
+        <div class="etq-codigo">${ean}</div>
+      </div>`;
+    if ((i + 1) % 20 === 0 && (i + 1) < total) {
+      html += '</div><div class="etiquetas-folha" style="page-break-before:always;">';
+    }
+  });
+  html += '</div>';
+  area.innerHTML = html;
+
+  setTimeout(() => {
+    produtos.forEach((p, i) => {
+      const ean = p.ean || gerarEANInternoUnico();
+      const usarCode128 = p.eanInterno || !/^\d{13}$/.test(ean);
+      try {
+        const opts = { width: 1.2, height: 30, displayValue: false, margin: 0 };
+        if (usarCode128) JsBarcode("#barcodeLote" + i, ean, Object.assign({ format: "CODE128" }, opts));
+        else JsBarcode("#barcodeLote" + i, ean, Object.assign({ format: "EAN13" }, opts));
+      } catch (e) {
+        console.warn('Erro na etiqueta ' + i, e);
+      }
+    });
+  }, 100);
+
+  document.getElementById('modalEtiquetasLote').classList.add('active');
+}
+function fecharModalEtiquetasLote() {
+  document.getElementById('modalEtiquetasLote').classList.remove('active');
+  document.getElementById('etiquetasPrintArea').innerHTML = '';
+}
+
+/* =========================================================
+   FILTRO DE BUSCA DO ESTOQUE (otimizado com debounce)
+   ========================================================= */
+let _estoqueDebounceTimer = null;
+const _filtrarProdutosEstoqueOriginal = filtrarProdutosEstoque;
+filtrarProdutosEstoque = function() {
+  clearTimeout(_estoqueDebounceTimer);
+  _estoqueDebounceTimer = setTimeout(function() {
+    _filtrarProdutosEstoqueOriginal();
+  }, 250);
+};
 
 /* =========================================================
    ATALHOS / INICIALIZAÇÃO
