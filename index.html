@@ -39,10 +39,11 @@
   .sidebar h1 { padding:0 20px 20px; color:#fff; font-size:18px; border-bottom:1px solid #333; display:flex; justify-content:space-between; align-items:center; }
   .sidebar-toggle { cursor:pointer; background:#333; border:none; color:#fff; padding:4px 8px; border-radius:4px; }
   .sidebar nav { margin-top:20px; }
-  .sidebar a { display:flex; align-items:center; gap:10px; padding:12px 20px; color:#aaa; text-decoration:none; cursor:pointer; font-size:13px; }
+  .sidebar a { display:flex; align-items:center; gap:10px; padding:12px 20px; color:#aaa; text-decoration:none; cursor:pointer; font-size:13px; position:relative; }
   .sidebar a:hover, .sidebar a.active { background:#4a5568; color:#fff; }
   .sidebar a.active { border-left:4px solid #fff; padding-left:16px; }
   .sidebar a.hidden { display:none; }
+  .sidebar-badge { position:absolute; right:12px; top:50%; transform:translateY(-50%); background:var(--danger); color:#fff; font-size:10px; font-weight:700; min-width:18px; height:18px; border-radius:9px; display:flex; align-items:center; justify-content:center; padding:0 5px; }
   .main { margin-left:220px; padding:30px; }
   .main.expanded { margin-left:70px; }
   .topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
@@ -109,9 +110,9 @@
   .filtro-status-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
   .pedido-container { display:grid; grid-template-columns: 1fr 340px; gap:20px; }
   .pedido-bloco { background:var(--bg-panel); border-radius:12px; padding:20px; box-shadow:var(--shadow); }
-  .item-row { display:grid; grid-template-columns: 50px 2fr 50px 80px 70px 80px 30px; gap:6px; align-items:center; padding:8px; border-bottom:1px solid var(--border-light); font-size:13px; }
+  .item-row { display:grid; grid-template-columns: 50px 1.6fr 1fr 50px 80px 70px 80px 30px; gap:6px; align-items:center; padding:8px; border-bottom:1px solid var(--border-light); font-size:13px; }
   .item-row input { padding:6px; font-size:12px; width:100%; }
-  .item-header { font-size:10px; font-weight:bold; color:var(--text-mute); text-transform:uppercase; padding:4px 8px; }
+  .item-header { font-size:10px; font-weight:bold; color:var(--text-mute); text-transform:uppercase; padding:4px 8px; display:grid; grid-template-columns: 50px 1.6fr 1fr 50px 80px 70px 80px 30px; gap:6px; }
   .resumo-fixo { position:sticky; top:20px; align-self:start; }
   .total-row { display:flex; justify-content:space-between; font-size:14px; padding:4px 0; align-items:center;}
   .total-row.grand { font-size:20px; font-weight:bold; border-top:2px solid var(--primary); margin-top:8px; padding-top:8px; color:var(--text);}
@@ -145,7 +146,7 @@
   #sec-dashboard .dash-panel .empty { padding:24px; }
   @media (max-width:1000px) { #sec-dashboard .dash-grid-2 { grid-template-columns:1fr; } }
 
-  /* ===== LISTAGEM DE PRODUTOS — COLUNA Nº E NOVAS COLUNAS ===== */
+  /* ===== LISTAGEM DE PRODUTOS ===== */
   #listaProdutos table th.col-num, #listaProdutos table td.col-num { width:50px; text-align:center; font-variant-numeric:tabular-nums; color:var(--text-mute); font-weight:600; }
   #listaProdutos table th.col-ref, #listaProdutos table td.col-ref { white-space:nowrap; font-family:'Consolas','Monaco',monospace; font-size:12px; }
   #listaProdutos table td.col-ean { font-family:'Consolas','Monaco',monospace; font-size:11px; color:var(--text-mute); white-space:nowrap; }
@@ -167,7 +168,7 @@
   #listaProdutos table td.col-check input { width:16px; height:16px; cursor:pointer; }
   #listaProdutos table th.col-check input { width:16px; height:16px; cursor:pointer; }
 
-  /* ===== BARRA DE AÇÕES EM LOTE (acima da lista) ===== */
+  /* ===== BARRA DE AÇÕES EM LOTE ===== */
   .barra-lote { display:none; align-items:center; gap:12px; padding:12px 16px; background:var(--bg-panel-alt); border:1px solid var(--border); border-radius:8px; margin-bottom:12px; flex-wrap:wrap; }
   .barra-lote.ativa { display:flex; }
   .barra-lote .contador-lote { font-size:13px; font-weight:600; color:var(--text); }
@@ -204,7 +205,23 @@
   .form-group-dim label { font-size:12px; color:var(--text-mute); margin-bottom:4px; font-weight:600; }
   .form-group-dim input { width:100%; }
 
-  @media (max-width:1000px) { .pedido-container { grid-template-columns: 1fr; } .sidebar { width:70px; } .sidebar h1 span, .sidebar a span { display:none; } .main { margin-left:70px; } .form-grid { grid-template-columns:1fr; } .item-row { grid-template-columns: 1fr; } .pagamento-row { grid-template-columns: 1fr; } .filtros-produto { flex-direction:column; align-items:stretch; } }
+  /* ===== CATEGORIAS ===== */
+  #sec-categorias .cat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-top:12px; }
+  .cat-card { background:var(--bg-panel-alt); border:1px solid var(--border); border-radius:10px; padding:14px 16px; display:flex; justify-content:space-between; align-items:center; }
+  .cat-card .cat-nome { font-weight:700; color:var(--text); font-size:14px; }
+  .cat-card .cat-acoes { display:flex; gap:6px; }
+
+  /* ===== RELATÓRIO DE MOVIMENTAÇÃO DE ESTOQUE ===== */
+  #sec-movestoque .form-grid { margin-bottom:16px; }
+  #listaMovEstoque table th.col-data, #listaMovEstoque table td.col-data { white-space:nowrap; font-size:12px; }
+  #listaMovEstoque table th.col-tipo, #listaMovEstoque table td.col-tipo { text-align:center; }
+  #listaMovEstoque table th.col-qtd, #listaMovEstoque table td.col-qtd { text-align:right; font-variant-numeric:tabular-nums; font-weight:600; }
+  #listaMovEstoque table th.col-valor, #listaMovEstoque table td.col-valor { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .badge-entrada { background:#d1fae5; color:#065f46; }
+  .badge-saida { background:#fee2e2; color:#991b1b; }
+  .badge-ajuste { background:#fef3c7; color:#92400e; }
+
+  @media (max-width:1000px) { .pedido-container { grid-template-columns: 1fr; } .sidebar { width:70px; } .sidebar h1 span, .sidebar a span { display:none; } .sidebar-badge { display:none; } .main { margin-left:70px; } .form-grid { grid-template-columns:1fr; } .item-row { grid-template-columns: 1fr; } .pagamento-row { grid-template-columns: 1fr; } .filtros-produto { flex-direction:column; align-items:stretch; } }
   
   @media print {
     body * { visibility: hidden; }
@@ -235,11 +252,13 @@
     <h1>HongVendas <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button></h1>
     <nav id="menuNav">
       <a data-section="dashboard" data-perm="dashboard" onclick="nav('dashboard')">📊 <span>Dashboard</span></a>
-      <a data-section="produtos" data-perm="produtos" onclick="nav('produtos')">📦 <span>Produtos</span></a>
+      <a data-section="produtos" data-perm="produtos" onclick="nav('produtos')">📦 <span>Produtos</span><span class="sidebar-badge" id="badgeEstoqueBaixo" style="display:none;">0</span></a>
+      <a data-section="categorias" data-perm="categorias" onclick="nav('categorias')">🗂️ <span>Categorias</span></a>
       <a data-section="clientes" data-perm="clientes" onclick="nav('clientes')">👥 <span>Clientes</span></a>
       <a data-section="fornecedores" data-perm="fornecedores" onclick="nav('fornecedores')">🏭 <span>Fornecedores</span></a>
       <a data-section="pedidos" data-perm="pedidos" onclick="nav('pedidos')">🧾 <span>Vendas / Propostas</span></a>
       <a data-section="relatorios" data-perm="relatorios" onclick="nav('relatorios')">📈 <span>Relatórios</span></a>
+      <a data-section="movestoque" data-perm="movestoque" onclick="nav('movestoque')">📋 <span>Mov. Estoque</span></a>
       <a data-section="unidades" data-perm="unidades" onclick="nav('unidades')">🏬 <span>Lojas/Unidades</span></a>
       <a data-section="caixa" data-perm="caixa" onclick="nav('caixa')">💰 <span>Caixa</span></a>
       <a data-section="usuarios" data-perm="usuarios" onclick="nav('usuarios')">🔐 <span>Usuários</span></a>
@@ -308,6 +327,7 @@
                 <option>Acabamento</option>
                 <option>Móveis</option>
                 <option>Infantil</option>
+                <option>Persiana</option>
                 <option>Outros</option>
               </select>
             </div>
@@ -369,7 +389,7 @@
         <div class="panel-header"><h3>Lista de Produtos</h3><input id="buscaProduto" placeholder="🔍 Buscar por nome/SKU/EAN..." oninput="renderProdutos(1)" style="width:220px"></div>
         <div class="filtros-produto">
           <div class="form-group" style="flex:1; min-width:160px;"><label>Fornecedor</label><select id="filtroProdFornecedor" onchange="renderProdutos(1)"><option value="">Todos</option></select></div>
-          <div class="form-group" style="flex:1; min-width:160px;"><label>Categoria</label><select id="filtroProdCategoria" onchange="renderProdutos(1)"><option value="">Todas</option><option>Papel de Parede</option><option>Tapete</option><option>Acabamento</option><option>Móveis</option><option>Infantil</option><option>Outros</option></select></div>
+          <div class="form-group" style="flex:1; min-width:160px;"><label>Categoria</label><select id="filtroProdCategoria" onchange="renderProdutos(1)"><option value="">Todas</option></select></div>
           <div class="form-group" style="flex:0 0 auto; min-width:150px;"><label>Estoque</label><select id="filtroProdEstoque" onchange="renderProdutos(1)"><option value="todos">Todos</option><option value="baixo">Baixo (≤ mín.)</option><option value="zerado">Zerado</option><option value="sobencomenda">Pedidos</option></select></div>
           <div class="form-group" style="flex:0 0 auto; min-width:150px;"><label>Status</label><select id="filtroProdStatus" onchange="renderProdutos(1)"><option value="todos">Todos</option><option value="ativo">Ativo</option><option value="fora_de_linha">Fora de linha</option><option value="inativo">Inativo</option></select></div>
           <button class="btn btn-sm" style="background:var(--bg-panel-alt);color:var(--text)" onclick="limparFiltrosProduto()">Limpar Filtros</button>
@@ -382,6 +402,20 @@
         </div>
         <div id="listaProdutos"></div>
         <div class="pagination" id="pagProdutos"></div>
+      </div>
+    </div>
+
+    <div class="section" id="sec-categorias">
+      <div class="panel">
+        <div class="panel-header">
+          <h3>🗂️ Categorias de Produtos</h3>
+          <div style="display:flex; gap:10px;">
+            <input id="novaCategoriaNome" placeholder="Nome da nova categoria..." style="width:250px">
+            <button class="btn btn-success" onclick="criarCategoria()">➕ Adicionar Categoria</button>
+          </div>
+        </div>
+        <p style="font-size:12px; color:var(--text-mute); margin-bottom:12px;">As categorias cadastradas aqui aparecem no select de categoria ao cadastrar/editar um produto. Você pode renomear ou excluir (produtos que usam a categoria não são alterados).</p>
+        <div id="listaCategorias" class="cat-grid"></div>
       </div>
     </div>
 
@@ -551,6 +585,35 @@
       </div>
     </div>
 
+    <div class="section" id="sec-movestoque">
+      <div class="panel" style="margin-bottom:20px;">
+        <div class="panel-header"><h3>📋 Filtros</h3></div>
+        <div class="form-grid" style="margin-bottom:10px;">
+          <div class="form-group"><label>Data Início</label><input type="date" id="movIni"></div>
+          <div class="form-group"><label>Data Fim</label><input type="date" id="movFim"></div>
+          <div class="form-group"><label>Tipo</label>
+            <select id="movTipo">
+              <option value="">Todos</option>
+              <option value="entrada">Entrada</option>
+              <option value="saida">Saída</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Produto</label>
+            <select id="movProduto"><option value="">Todos</option></select>
+          </div>
+          <button class="btn btn-primary" onclick="renderMovEstoque(1)" style="align-self:flex-end;">Filtrar</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <h3>Movimentações de Estoque</h3>
+          <button class="btn btn-info" onclick="exportarMovEstoqueXLSX()">📊 Exportar Excel</button>
+        </div>
+        <div id="listaMovEstoque"></div>
+        <div class="pagination" id="pagMovEstoque"></div>
+      </div>
+    </div>
+
     <div class="section" id="sec-unidades">
       <div style="display:flex; gap:10px; margin-bottom:20px;">
         <button class="btn btn-success" onclick="toggleAccordion('formUnidade')">➕ Nova Unidade</button>
@@ -650,8 +713,8 @@
             <button class="btn btn-info btn-sm" onclick="abrirBuscaProduto()">➕ Adicionar Produto</button>
           </div>
         </div>
-        <div class="item-header" style="display:grid; grid-template-columns: 50px 2fr 50px 80px 70px 80px 30px; gap:6px;">
-          <span>Qtd</span><span>Produto</span><span>Un</span><span>Preço</span><span>Desc%</span><span>Total</span><span></span>
+        <div class="item-header">
+          <span>Qtd</span><span>Produto</span><span>Dimensão</span><span>Un</span><span>Preço</span><span>Desc%</span><span>Total</span><span></span>
         </div>
         <div id="itensPedido"></div>
 
@@ -708,7 +771,11 @@
   <div class="modal-content">
     <button class="modal-close-btn" onclick="fecharBuscaProduto()">×</button>
     <h3>Buscar Produto</h3>
-    <input id="inputBuscaProduto" placeholder="🔍 Buscar por nome, SKU ou EAN..." style="width:100%; margin:16px 0;" oninput="renderBuscaProdutos(1)">
+    <div class="form-grid" style="margin:16px 0 8px;">
+      <div class="form-group"><label>Categoria</label><select id="buscaProdCategoria" onchange="renderBuscaProdutos(1)"><option value="">Todas</option></select></div>
+      <div class="form-group"><label>Fornecedor</label><select id="buscaProdFornecedor" onchange="renderBuscaProdutos(1)"><option value="">Todos</option></select></div>
+    </div>
+    <input id="inputBuscaProduto" placeholder="🔍 Buscar por nome, SKU ou EAN..." style="width:100%; margin:8px 0 16px;" oninput="renderBuscaProdutos(1)">
     <div id="resultadoBusca" style="max-height:400px; overflow-y:auto;"></div>
     <div class="pagination" id="pagBuscaProduto"></div>
   </div>
@@ -751,6 +818,7 @@
     <div class="form-grid">
       <div class="form-group"><label>Nota Fiscal</label><input id="entNota" placeholder="Nº da NF"></div>
       <div class="form-group"><label>Quantidade *</label><input type="number" id="entQtd" placeholder="Ex: 10"></div>
+      <div class="form-group"><label>Frete (R$)</label><input type="number" step="0.01" id="entFrete" placeholder="0,00"></div>
     </div>
     <div class="form-group" style="margin-bottom:12px;">
       <label>Observações</label>
@@ -881,10 +949,10 @@
    ========================================================= */
 let usuarioLogado = null;
 let produtosCache = [], produtosPublicosCache = [], clientesCache = [], fornecedoresCache = [],
-    pedidosCache = [], caixaCache = [], unidadesCache = [], usuariosCache = [], movEstoqueCache = [];
+    pedidosCache = [], caixaCache = [], unidadesCache = [], usuariosCache = [], movEstoqueCache = [], categoriasCache = [];
 let editandoPedidoItens = [], editandoPagamentos = [];
 let pedidoAtual = null, tipoPedidoAtual = 'venda', descontoLiberado = false, acaoPendente = null;
-let pagProd = 1, pagCli = 1, pagPedidos = 1, pagRel = 1, pagBuscaProd = 1, pagCaixa = 1, pagFornecedor = 1;
+let pagProd = 1, pagCli = 1, pagPedidos = 1, pagRel = 1, pagBuscaProd = 1, pagCaixa = 1, pagFornecedor = 1, pagMovEstoque = 1;
 let filtroStatusPedidos = 'todos';
 let relListaCache = [];
 let editandoProdutoId = null, editandoClienteId = null, editandoUnidadeId = null, editandoFornecedorId = null;
@@ -896,13 +964,17 @@ const ITENS_POR_PAGINA_PRODUTOS = 20;
 const GUIAS_DISPONIVEIS = [
   { id: 'dashboard', label: '📊 Dashboard' },
   { id: 'produtos', label: '📦 Produtos' },
+  { id: 'categorias', label: '🗂️ Categorias' },
   { id: 'clientes', label: '👥 Clientes' },
   { id: 'fornecedores', label: '🏭 Fornecedores' },
   { id: 'pedidos', label: '🧾 Vendas / Propostas' },
   { id: 'relatorios', label: '📈 Relatórios' },
+  { id: 'movestoque', label: '📋 Mov. Estoque' },
   { id: 'unidades', label: '🏬 Lojas/Unidades' },
   { id: 'caixa', label: '💰 Caixa' }
 ];
+
+const CATEGORIAS_INICIAIS = ['Papel de Parede', 'Tapete', 'Acabamento', 'Móveis', 'Infantil', 'Persiana', 'Outros'];
 
 const LOGO_URL = "https://i.imgur.com/DopVNsa.jpeg";
 
@@ -1184,7 +1256,7 @@ function aplicarPermissoes() {
   let permissoes = [];
   if (isAdmin()) permissoes = GUIAS_DISPONIVEIS.map(g => g.id).concat(['usuarios','auditoria','backup']);
   else if (isFinanceiro()) permissoes = ['caixa', 'relatorios'];
-  else if (isEstoquista()) permissoes = ['produtos', 'fornecedores'];
+  else if (isEstoquista()) permissoes = ['produtos', 'categorias', 'fornecedores', 'movestoque'];
   else if (isConsultor()) permissoes = ['produtos', 'clientes', 'pedidos'];
   else permissoes = usuarioLogado.permissoes || ['dashboard'];
 
@@ -1210,14 +1282,16 @@ function nav(sec) {
   document.querySelectorAll('.sidebar a').forEach(a => a.classList.toggle('active', a.dataset.section === sec));
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   const el = document.getElementById('sec-' + sec); if (el) el.classList.add('active');
-  const titles = { dashboard:'Dashboard', produtos:'Produtos', clientes:'Clientes', fornecedores:'Fornecedores', pedidos:'Vendas / Propostas', relatorios:'Relatórios', unidades:'Lojas/Unidades', caixa:'Caixa', usuarios:'Usuários', auditoria:'Auditoria', backup:'Backup' };
+  const titles = { dashboard:'Dashboard', produtos:'Produtos', categorias:'Categorias', clientes:'Clientes', fornecedores:'Fornecedores', pedidos:'Vendas / Propostas', relatorios:'Relatórios', movestoque:'Mov. Estoque', unidades:'Lojas/Unidades', caixa:'Caixa', usuarios:'Usuários', auditoria:'Auditoria', backup:'Backup' };
   document.getElementById('pageTitle').textContent = titles[sec] || sec;
   if (sec === 'dashboard') renderDashboard();
   if (sec === 'produtos') renderProdutos(1);
+  if (sec === 'categorias') renderCategorias();
   if (sec === 'clientes') renderClientes(1);
   if (sec === 'fornecedores') renderFornecedores(1);
   if (sec === 'pedidos') renderPedidos(1);
   if (sec === 'relatorios') renderRelatorios();
+  if (sec === 'movestoque') renderMovEstoque(1);
   if (sec === 'unidades') renderUnidades();
   if (sec === 'caixa') renderCaixa(1);
   if (sec === 'usuarios') renderUsuarios();
@@ -1233,11 +1307,19 @@ function carregarTudoDoFirebase() {
     if (document.getElementById('sec-produtos').classList.contains('active')) renderProdutos(pagProd);
     if (document.getElementById('sec-dashboard').classList.contains('active')) renderDashboard();
     atualizarSelects();
+    atualizarBadgeEstoqueBaixo();
   }, err => console.error('produtos:', err));
 
   db.collection('produtos_publicos').onSnapshot(snap => {
     produtosPublicosCache = []; snap.forEach(d => produtosPublicosCache.push({ id: d.id, ...d.data() }));
   }, () => {});
+
+  db.collection('categorias').onSnapshot(snap => {
+    categoriasCache = []; snap.forEach(d => categoriasCache.push({ id: d.id, ...d.data() }));
+    categoriasCache.sort((a,b) => compararNatural(a.nome||'', b.nome||''));
+    if (document.getElementById('sec-categorias').classList.contains('active')) renderCategorias();
+    atualizarSelects();
+  }, err => console.error('categorias:', err));
 
   db.collection('clientes').onSnapshot(snap => {
     clientesCache = []; snap.forEach(d => clientesCache.push({ id: d.id, ...d.data() }));
@@ -1277,6 +1359,7 @@ function carregarTudoDoFirebase() {
   db.collection('movEstoque').onSnapshot(snap => {
     movEstoqueCache = []; snap.forEach(d => movEstoqueCache.push({ id: d.id, ...d.data() }));
     if (document.getElementById('modalEstoque').classList.contains('active')) renderHistoricoEntradasEstoque();
+    if (document.getElementById('sec-movestoque').classList.contains('active')) renderMovEstoque(pagMovEstoque);
   }, err => console.error('movEstoque:', err));
 }
 function atualizarSelects() {
@@ -1298,6 +1381,115 @@ function atualizarSelects() {
     filtroForn.innerHTML = '<option value="">Todos</option>' + fornecedoresCache.map(f => `<option value="${f.id}">${escapeHtml(f.nome)}</option>`).join('');
     filtroForn.value = atual;
   }
+  const prodCat = document.getElementById('prodCategoria');
+  if (prodCat) {
+    const atual = prodCat.value;
+    const cats = categoriasCache.length ? categoriasCache : CATEGORIAS_INICIAIS.map(n => ({ nome: n }));
+    prodCat.innerHTML = '<option value="">Selecione...</option>' + cats.map(c => `<option value="${escapeHtml(c.nome)}">${escapeHtml(c.nome)}</option>`).join('');
+    if (atual && [...prodCat.options].some(o => o.value === atual)) prodCat.value = atual;
+  }
+  const filtroCat = document.getElementById('filtroProdCategoria');
+  if (filtroCat) {
+    const atual = filtroCat.value;
+    const cats = categoriasCache.length ? categoriasCache : CATEGORIAS_INICIAIS.map(n => ({ nome: n }));
+    filtroCat.innerHTML = '<option value="">Todas</option>' + cats.map(c => `<option value="${escapeHtml(c.nome)}">${escapeHtml(c.nome)}</option>`).join('');
+    filtroCat.value = atual;
+  }
+  const buscaCat = document.getElementById('buscaProdCategoria');
+  if (buscaCat) {
+    const atual = buscaCat.value;
+    const cats = categoriasCache.length ? categoriasCache : CATEGORIAS_INICIAIS.map(n => ({ nome: n }));
+    buscaCat.innerHTML = '<option value="">Todas</option>' + cats.map(c => `<option value="${escapeHtml(c.nome)}">${escapeHtml(c.nome)}</option>`).join('');
+    buscaCat.value = atual;
+  }
+  const buscaForn = document.getElementById('buscaProdFornecedor');
+  if (buscaForn) {
+    const atual = buscaForn.value;
+    buscaForn.innerHTML = '<option value="">Todos</option>' + fornecedoresCache.map(f => `<option value="${f.id}">${escapeHtml(f.nome)}</option>`).join('');
+    buscaForn.value = atual;
+  }
+  const movProduto = document.getElementById('movProduto');
+  if (movProduto) {
+    const atual = movProduto.value;
+    movProduto.innerHTML = '<option value="">Todos</option>' + produtosCache.map(p => `<option value="${p.id}">${escapeHtml(p.sku||'')} — ${escapeHtml(p.nome)}</option>`).join('');
+    movProduto.value = atual;
+  }
+}
+function atualizarBadgeEstoqueBaixo() {
+  const badge = document.getElementById('badgeEstoqueBaixo');
+  if (!badge) return;
+  const baixos = produtosCache.filter(p => p.estoque <= p.min && normalizarStatusProduto(p) === 'ativo').length;
+  if (baixos > 0) {
+    badge.textContent = baixos;
+    badge.style.display = 'flex';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+/* =========================================================
+   CATEGORIAS
+   ========================================================= */
+async function criarCategoriasIniciais() {
+  const snap = await db.collection('categorias').get();
+  if (!snap.empty) return;
+  const batch = db.batch();
+  CATEGORIAS_INICIAIS.forEach(nome => {
+    const ref = db.collection('categorias').doc();
+    batch.set(ref, { nome, criadoEm: new Date().toISOString() });
+  });
+  await batch.commit();
+  registrarAuditoria('Categorias', 'Categorias iniciais criadas automaticamente');
+}
+function renderCategorias() {
+  const el = document.getElementById('listaCategorias');
+  if (!el) return;
+  const cats = categoriasCache.length ? categoriasCache : [];
+  if (!cats.length) { el.innerHTML = '<div class="empty">Nenhuma categoria cadastrada.</div>'; return; }
+  el.innerHTML = cats.map(c => `
+    <div class="cat-card">
+      <span class="cat-nome">${escapeHtml(c.nome)}</span>
+      <div class="cat-acoes">
+        <button class="btn btn-warn btn-sm" onclick="editarCategoria('${c.id}')" title="Editar">✏️</button>
+        <button class="btn btn-danger btn-sm" onclick="excluirCategoria('${c.id}')" title="Excluir">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+}
+function criarCategoria() {
+  const input = document.getElementById('novaCategoriaNome');
+  const nome = input.value.trim();
+  if (!nome) return alert('Informe o nome da categoria.');
+  if (categoriasCache.some(c => (c.nome||'').toLowerCase() === nome.toLowerCase()))
+    return alert('❌ Já existe uma categoria com este nome.');
+  db.collection('categorias').add({ nome, criadoEm: new Date().toISOString() }).then(() => {
+    input.value = '';
+    registrarAuditoria('Cadastro Categoria', nome);
+    alert('✅ Categoria criada!');
+  }).catch(err => alert('Erro: ' + err.message));
+}
+function editarCategoria(id) {
+  const c = categoriasCache.find(x => x.id === id); if (!c) return;
+  const novo = prompt('Novo nome da categoria:', c.nome);
+  if (novo === null) return;
+  const nome = novo.trim();
+  if (!nome) return alert('Informe um nome.');
+  if (categoriasCache.some(x => x.id !== id && (x.nome||'').toLowerCase() === nome.toLowerCase()))
+    return alert('❌ Já existe uma categoria com este nome.');
+  db.collection('categorias').doc(id).update({ nome }).then(() => {
+    registrarAuditoria('Edição Categoria', `${c.nome} → ${nome}`);
+    alert('✅ Categoria atualizada!');
+  }).catch(err => alert('Erro: ' + err.message));
+}
+function excluirCategoria(id) {
+  const c = categoriasCache.find(x => x.id === id); if (!c) return;
+  const emUso = produtosCache.some(p => p.categoria === c.nome);
+  if (emUso) {
+    if (!confirm(`⚠️ A categoria "${c.nome}" está em uso por produtos. Se excluir, os produtos mantêm a categoria antiga (não serão alterados). Continuar?`)) return;
+  }
+  solicitarAutorizacao('Excluir Categoria', `Digite a senha do gestor para excluir "${c.nome}".`, () => {
+    db.collection('categorias').doc(id).delete().then(() => registrarAuditoria('Exclusão Categoria', c.nome));
+  });
 }
 
 /* =========================================================
@@ -1396,6 +1588,70 @@ function salvarProduto() {
       registrarAuditoria('Cadastro Produto', nome + ' | EAN: ' + ean);
     }).catch(err => showAlert(document.getElementById('alertProduto'), 'Erro: ' + err.message, 'error'));
   }
+}
+function salvarProdutoENovo() {
+  const nome = document.getElementById('prodNome').value.trim();
+  const sku = document.getElementById('prodSku').value.trim();
+  let ean = document.getElementById('prodEan').value.trim();
+  const categoria = document.getElementById('prodCategoria').value;
+  if (!nome || !sku) return showAlert(document.getElementById('alertProduto'), 'Informe Nome e SKU.', 'error');
+  if (!categoria) return showAlert(document.getElementById('alertProduto'), 'Selecione a categoria.', 'error');
+  
+  if (produtosCache.some(p => p.id !== editandoProdutoId && (p.sku||'').toLowerCase() === sku.toLowerCase()))
+    return showAlert(document.getElementById('alertProduto'), '❌ Já existe um produto com este SKU.', 'error');
+
+  if (!ean) {
+    ean = gerarEANInternoUnico();
+  }
+  if (!/^\d{8,14}$/.test(ean)) {
+    return showAlert(document.getElementById('alertProduto'), '❌ Código de Barras inválido. Use apenas números (8 a 14 dígitos).', 'error');
+  }
+  if (produtosCache.some(p => p.id !== editandoProdutoId && (p.ean||'') === ean))
+    return showAlert(document.getElementById('alertProduto'), '❌ Já existe um produto com este Código de Barras (EAN).', 'error');
+  const dup = produtosCache.find(p => p.id !== editandoProdutoId && (p.nome||'').toLowerCase() === nome.toLowerCase());
+  if (dup && !confirm(`⚠️ Já existe um produto com nome idêntico (${dup.nome}). Tem certeza que não é duplicidade?`)) return;
+
+  const eanInterno = /^200/.test(ean) && !ean.startsWith('2000');
+  const statusProduto = document.getElementById('prodStatus').value || 'ativo';
+  const agora = new Date().toISOString();
+
+  const dados = {
+    sku, nome, categoria,
+    unidade: document.getElementById('prodUnidade').value || 'UN',
+    fornecedorId: document.getElementById('prodFornecedor').value || '',
+    custo: parseFloat(document.getElementById('prodCusto').value) || 0,
+    venda: parseFloat(document.getElementById('prodVenda').value) || 0,
+    min: parseInt(document.getElementById('prodMin').value) || 5,
+    sobEncomenda: document.getElementById('prodSobEncomenda').checked,
+    statusProduto: statusProduto,
+    ncm: document.getElementById('prodNcm').value.trim(),
+    ean: ean,
+    eanInterno: eanInterno,
+    dim: document.getElementById('prodDim').value.trim(),
+    tamanho: document.getElementById('prodTam').value.trim(),
+    criadoEm: agora,
+    atualizadoEm: agora,
+    estoque: parseInt(document.getElementById('prodEstoque').value) || 0
+  };
+  const publico = { sku, nome, categoria, unidade: dados.unidade, fornecedorId: dados.fornecedorId, venda: dados.venda, min: dados.min, sobEncomenda: dados.sobEncomenda, statusProduto: dados.statusProduto, ean: dados.ean, eanInterno: dados.eanInterno, tamanho: dados.tamanho, criadoEm: agora, atualizadoEm: agora, estoque: dados.estoque };
+
+  const ref = db.collection('produtos').doc();
+  const batch = db.batch();
+  batch.set(ref, dados);
+  batch.set(db.collection('produtos_publicos').doc(ref.id), publico);
+  batch.commit().then(() => {
+    showAlert(document.getElementById('alertProduto'), '✅ Produto salvo! EAN: ' + ean + '. Pronto para o próximo.', 'success');
+    editandoProdutoId = null;
+    ['prodNome','prodSku','prodCategoria','prodCusto','prodVenda','prodNcm','prodEan','prodDim','prodTam','prodFornecedor'].forEach(i => { const el = document.getElementById(i); if (el) el.value = ''; });
+    document.getElementById('prodEstoque').value = '0';
+    document.getElementById('prodMin').value = '5';
+    document.getElementById('prodUnidade').value = 'UN';
+    document.getElementById('prodStatus').value = 'ativo';
+    document.getElementById('prodSobEncomenda').checked = false;
+    document.getElementById('tituloFormProduto').textContent = 'Cadastrar Produto';
+    document.getElementById('prodSku').focus();
+    registrarAuditoria('Cadastro Produto', nome + ' | EAN: ' + ean);
+  }).catch(err => showAlert(document.getElementById('alertProduto'), 'Erro: ' + err.message, 'error'));
 }
 function renderProdutos(pagina = 1) {
   pagProd = pagina;
@@ -1950,6 +2206,7 @@ function abrirModalEstoque() {
   document.getElementById('alertEstoqueModal').style.display = 'none';
   document.getElementById('entQtd').value = '';
   document.getElementById('entNota').value = '';
+  document.getElementById('entFrete').value = '';
   document.getElementById('entObs').value = '';
   document.getElementById('estoqueBuscaProduto').value = '';
   document.getElementById('modalEstoque').classList.add('active');
@@ -2003,952 +2260,16 @@ function renderHistoricoEntradasEstoque() {
   if (!el) return;
   const entradas = movEstoqueCache.filter(m => m.tipo === 'entrada').sort((a,b) => (b.data||'').localeCompare(a.data||'')).slice(0, 20);
   if (!entradas.length) { el.innerHTML = '<div class="estoque-historico-vazio">Nenhuma entrada lançada ainda.</div>'; return; }
-  el.innerHTML = `<div class="table-wrapper"><table><thead><tr><th>Data</th><th>Produto</th><th>Qtd</th><th>Fornecedor</th><th>NF</th><th>Usuário</th></tr></thead><tbody>
+  el.innerHTML = `<div class="table-wrapper"><table><thead><tr><th>Data</th><th>Produto</th><th>Qtd</th><th>Fornecedor</th><th>NF</th><th>Frete</th><th>Usuário</th></tr></thead><tbody>
     ${entradas.map(m => `<tr>
       <td>${formatarDataHoraBR(m.data)}</td>
       <td>${escapeHtml(m.produto||'-')}</td>
       <td style="text-align:right; font-weight:bold; color:var(--success)">+${m.qtd}</td>
       <td>${escapeHtml(m.fornecedor||'-')}</td>
       <td>${escapeHtml(m.nota||'-')}</td>
+      <td style="text-align:right">R$ ${formatarMoeda(m.frete||0)}</td>
       <td>${escapeHtml(m.usuario||'-')}</td>
     </tr>`).join('')}</tbody></table></div>`;
-}
-
-/* =========================================================
-   PEDIDOS — número sequencial por dia
-   ========================================================= */
-async function gerarNumeroPedido(tipo) {
-  const hoje = hojeLocalISO();
-  const prefixo = tipo === 'venda' ? 'V' : 'P';
-  const ref = db.collection('contadores').doc(`${prefixo}-${hoje}`);
-  const novo = await db.runTransaction(async tx => {
-    const snap = await tx.get(ref);
-    const atual = snap.exists ? (snap.data().seq || 0) : 0;
-    const proximo = atual + 1;
-    tx.set(ref, { seq: proximo, dia: hoje, tipo, atualizadoEm: new Date().toISOString() }, { merge: true });
-    return proximo;
-  });
-  return `${prefixo}-${hoje}-${String(novo).padStart(3,'0')}`;
-}
-
-/* =========================================================
-   MODAL DE VENDA / PROPOSTA
-   ========================================================= */
-function abrirModalVenda(tipo = 'venda', pedidoParaEditar = null) {
-  pedidoAtual = pedidoParaEditar;
-  tipoPedidoAtual = tipo;
-  descontoLiberado = isGestor() || !!pedidoParaEditar;
-  editandoPedidoItens = [];
-  editandoPagamentos = [{ forma:'Cartão de Crédito', bandeira:'Visa', parcelas:1, valor:0 }];
-
-  document.getElementById('pedDescontoReal').disabled = !descontoLiberado;
-  document.getElementById('pedDescontoPerc').disabled = !descontoLiberado;
-  document.getElementById('pedDescontoReal').value = '0';
-  document.getElementById('pedDescontoPerc').value = '0';
-  document.getElementById('pedCliente').value = '';
-  document.getElementById('pedData').valueAsDate = new Date();
-  document.getElementById('pedVendedor').value = usuarioLogado.nome;
-  document.getElementById('pedObs').value = '';
-  document.getElementById('pedArquiteto').value = '';
-  document.getElementById('pedDataEntrega').value = '';
-  document.getElementById('pedFrete').value = '0';
-  document.getElementById('pedTransportadora').value = '';
-  document.getElementById('pedModalidade').value = 'pronta_entrega';
-  document.getElementById('pedTipoNota').value = 'CUPOM NÃO FISCAL';
-  document.getElementById('pedCanal').value = 'ShowRoom';
-
-  atualizarSelects();
-
-  if (pedidoParaEditar) {
-    document.getElementById('tituloModalVenda').textContent = 'Editar Pedido ' + pedidoParaEditar.numero;
-    document.getElementById('pedCliente').value = pedidoParaEditar.clienteId || '';
-    document.getElementById('pedData').value = pedidoParaEditar.data || hojeLocalISO();
-    document.getElementById('pedVendedor').value = pedidoParaEditar.vendedor || usuarioLogado.nome;
-    document.getElementById('pedObs').value = pedidoParaEditar.obs || '';
-    document.getElementById('pedArquiteto').value = pedidoParaEditar.arquiteto || '';
-    document.getElementById('pedDataEntrega').value = pedidoParaEditar.dataEntrega || '';
-    document.getElementById('pedFrete').value = pedidoParaEditar.frete || 0;
-    document.getElementById('pedTransportadora').value = pedidoParaEditar.transportadora || '';
-    document.getElementById('pedModalidade').value = pedidoParaEditar.modalidade || 'pronta_entrega';
-    document.getElementById('pedTipoNota').value = pedidoParaEditar.tipoNota || 'CUPOM NÃO FISCAL';
-    document.getElementById('pedCanal').value = pedidoParaEditar.canal || 'ShowRoom';
-    editandoPedidoItens = (pedidoParaEditar.itens || []).map(i => ({ ...i }));
-    editandoPagamentos = (pedidoParaEditar.pagamentos || []).map(p => ({ ...p }));
-    if (!editandoPagamentos.length) editandoPagamentos = [{ forma:'Cartão de Crédito', bandeira:'Visa', parcelas:1, valor:0 }];
-    document.getElementById('pedDescontoPerc').value = pedidoParaEditar.descontoPerc || 0;
-    document.getElementById('pedDescontoReal').value = pedidoParaEditar.descontoReal || 0;
-  } else {
-    document.getElementById('tituloModalVenda').textContent = tipo === 'proposta' ? 'Nova Proposta' : 'Novo Pedido de Venda';
-  }
-  renderItensPedido();
-  renderPagamentos();
-  document.getElementById('modalVenda').classList.add('active');
-}
-function fecharModalVenda() { document.getElementById('modalVenda').classList.remove('active'); }
-
-function renderItensPedido() {
-  const el = document.getElementById('itensPedido');
-  if (!editandoPedidoItens.length) { el.innerHTML = '<div class="empty">Nenhum item adicionado.</div>'; atualizarTotal(); return; }
-  el.innerHTML = editandoPedidoItens.map((it, idx) => {
-    const prod = produtosCache.find(p => p.id === it.produtoId);
-    const nome = it.nomeSnapshot || (prod ? prod.nome : '?');
-    const sku = it.skuSnapshot || (prod ? prod.sku : '-');
-    const un = it.unidadeSnapshot || (prod ? (prod.unidade || 'un') : 'un');
-    const desc = parseFloat(it.descontoPerc) || 0;
-    const total = (it.precoUnit * it.qtd) * (1 - desc/100);
-    return `<div class="item-row">
-      <input type="number" min="1" value="${it.qtd}" onchange="atualizarItem(${idx},'qtd',this.value)">
-      <div style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:600" title="${escapeHtml(nome)}">${escapeHtml(nome)}<br><small style="color:var(--text-light)">${escapeHtml(sku)}</small></div>
-      <div style="font-size:12px; color:var(--text-light)">${escapeHtml(un)}</div>
-      <input type="number" step="0.01" value="${it.precoUnit}" onchange="atualizarItem(${idx},'precoUnit',this.value)">
-      <input type="number" step="1" value="${desc}" onchange="atualizarItem(${idx},'descontoPerc',this.value)" ${descontoLiberado?'':'disabled title="Bloqueado — solicite liberação"'}>
-      <div style="font-weight:bold">R$ ${formatarMoeda(total)}</div>
-      <button class="btn-icon" onclick="removerItem(${idx})">❌</button>
-    </div>`;
-  }).join('');
-  atualizarTotal();
-}
-function atualizarItem(idx, campo, valor) {
-  editandoPedidoItens[idx][campo] = parseFloat(String(valor).replace(',', '.')) || 0;
-  if (campo === 'qtd' && editandoPedidoItens[idx][campo] < 1) editandoPedidoItens[idx][campo] = 1;
-  renderItensPedido();
-}
-function removerItem(idx) { editandoPedidoItens.splice(idx, 1); renderItensPedido(); }
-
-function abrirBuscaProduto() {
-  document.getElementById('modalBuscaProduto').classList.add('active');
-  document.getElementById('inputBuscaProduto').value = '';
-  renderBuscaProdutos(1);
-}
-function fecharBuscaProduto() { document.getElementById('modalBuscaProduto').classList.remove('active'); }
-function renderBuscaProdutos(pagina) {
-  pagBuscaProd = pagina || 1;
-  const termo = (document.getElementById('inputBuscaProduto').value || '').toLowerCase();
-  let list = produtosCache.slice();
-  if (termo) list = list.filter(p => 
-    (p.nome||'').toLowerCase().includes(termo) || 
-    (p.sku||'').toLowerCase().includes(termo) || 
-    (p.ean||'').toLowerCase().includes(termo)
-  );
-  list = ordenarProdutosPorReferencia(list);
-  const el = document.getElementById('resultadoBusca');
-  if (!list.length) { el.innerHTML = '<div class="empty">Nenhum produto encontrado.</div>'; document.getElementById('pagBuscaProduto').innerHTML = ''; return; }
-  const paginados = paginar(list, pagina);
-  el.innerHTML = paginados.map(p => {
-    const disponivel = produtoDisponivelParaVenda(p);
-    const esg = p.estoque <= 0 && !p.sobEncomenda;
-    const badgeEst = p.estoque <= 0 ? (p.sobEncomenda ? '<span style="color:var(--info);font-size:11px;font-weight:bold;">[PEDIDOS]</span>' : '<span style="color:red">(ESGOTADO)</span>') : `<span style="color:gray">(Est: ${p.estoque})</span>`;
-    const bloqueado = !disponivel || esg;
-    return `<div style="padding:12px; border-bottom:1px solid var(--border-light); ${bloqueado?'opacity:0.55;':'cursor:pointer;'}" ${bloqueado?'':`onclick="adicionarItemPorId('${p.id}'); fecharBuscaProduto();"`}>
-      <strong>${escapeHtml(p.nome)}</strong> ${badgeEst} ${badgeStatusProduto(p)}
-      <br><small>${escapeHtml(p.sku)} | ${escapeHtml(p.categoria||'-')} | R$ ${formatarMoeda(p.venda||0)}</small>
-      ${!disponivel ? '<br><small style="color:var(--danger); font-weight:bold;">⛔ Produto não disponível para venda</small>' : ''}
-    </div>`;
-  }).join('');
-  renderPaginacao(list.length, pagina, 'pagBuscaProduto', 'renderBuscaProdutos');
-}
-function adicionarPorBipagem(codigo) {
-  codigo = String(codigo).trim();
-  const p = produtosCache.find(x => 
-    (x.sku||'').toLowerCase() === codigo.toLowerCase() || 
-    (x.ean||'').toLowerCase() === codigo.toLowerCase()
-  );
-  if (!p) return alert('Produto não encontrado (SKU ou EAN).');
-  if (!produtoDisponivelParaVenda(p)) return alert(`⛔ Produto "${p.nome}" está ${labelStatusProduto(p).toLowerCase()} e não pode ser vendido.`);
-  if (p.estoque <= 0 && !p.sobEncomenda) return alert('Produto esgotado.');
-  adicionarItemPorId(p.id);
-  document.getElementById('biparProduto').value = '';
-}
-function adicionarItemPorId(id) {
-  const prod = produtosCache.find(p => p.id === id);
-  if (!prod) return;
-  if (!produtoDisponivelParaVenda(prod)) return alert(`⛔ Produto "${prod.nome}" está ${labelStatusProduto(prod).toLowerCase()} e não pode ser vendido.`);
-  if (prod.estoque <= 0 && !prod.sobEncomenda) return;
-  const ex = editandoPedidoItens.find(i => i.produtoId === id);
-  if (ex) ex.qtd += 1;
-  else editandoPedidoItens.push({
-    produtoId: id, qtd: 1, precoUnit: prod.venda, descontoPerc: 0,
-    nomeSnapshot: prod.nome, skuSnapshot: prod.sku, unidadeSnapshot: prod.unidade || 'un',
-    comprado: false, recebido: false
-  });
-  renderItensPedido();
-  if (prod.sobEncomenda && document.getElementById('pedModalidade').value !== 'sob_encomenda') {
-    if (confirm(`"${prod.nome}" é sob encomenda. Mudar modalidade?`)) {
-      document.getElementById('pedModalidade').value = 'sob_encomenda';
-    }
-  }
-}
-
-function renderPagamentos() {
-  const el = document.getElementById('pagamentosPedido');
-  el.innerHTML = editandoPagamentos.map((p, idx) => {
-    const isCred = p.forma === 'Cartão de Crédito';
-    const isCartao = isCred || p.forma === 'Cartão de Débito';
-    const isCortesia = p.forma === 'Crédito Loja';
-    const bandeiras = ['Visa','Mastercard','Elo','American Express','Hipercard','Outra'].map(b => `<option value="${b}" ${p.bandeira===b?'selected':''}>${b}</option>`).join('');
-    return `<div class="pagamento-row">
-      <select onchange="atualizarPagamento(${idx},'forma',this.value)">
-        <option value="Cartão de Crédito" ${p.forma==='Cartão de Crédito'?'selected':''}>C. Crédito</option>
-        <option value="Cartão de Débito" ${p.forma==='Cartão de Débito'?'selected':''}>C. Débito</option>
-        <option value="PIX" ${p.forma==='PIX'?'selected':''}>PIX</option>
-        <option value="Dinheiro" ${p.forma==='Dinheiro'?'selected':''}>Dinheiro</option>
-        <option value="Crédito Loja" ${isCortesia?'selected':''}>Cortesia</option>
-      </select>
-      <select onchange="atualizarPagamento(${idx},'bandeira',this.value)" ${isCartao?'':'disabled'}>${isCartao?bandeiras:'<option>--</option>'}</select>
-      <input type="number" min="1" value="${p.parcelas||1}" onchange="atualizarPagamento(${idx},'parcelas',this.value)" ${isCred?'':'disabled'} placeholder="Parc.">
-      <input type="text" inputmode="decimal" value="${p.valor}" onblur="atualizarPagamento(${idx},'valor',this.value)" placeholder="R$">
-      <button class="btn-icon" onclick="removerPagamento(${idx})">❌</button>
-    </div>
-    ${isCortesia ? `<input type="text" placeholder="Motivo da cortesia (obrigatório)" value="${escapeHtml(p.motivoCortesia||'')}" oninput="atualizarPagamento(${idx},'motivoCortesia',this.value)" style="width:100%; margin-bottom:6px; padding:6px; font-size:12px;">` : ''}`;
-  }).join('');
-  atualizarTotal();
-}
-function atualizarPagamento(idx, campo, valor) {
-  if (campo === 'valor') editandoPagamentos[idx][campo] = parseFloat(String(valor).replace(',', '.')) || 0;
-  else if (campo === 'parcelas') editandoPagamentos[idx][campo] = parseInt(valor) || 1;
-  else editandoPagamentos[idx][campo] = valor;
-  atualizarTotal();
-}
-function removerPagamento(idx) {
-  editandoPagamentos.splice(idx, 1);
-  if (!editandoPagamentos.length) editandoPagamentos.push({ forma:'Cartão de Crédito', bandeira:'Visa', parcelas:1, valor:0 });
-  renderPagamentos();
-}
-function addPagamento() { editandoPagamentos.push({ forma:'PIX', bandeira:'', parcelas:1, valor:0 }); renderPagamentos(); }
-
-function calcularTotalPedido() {
-  let subtotal = 0;
-  editandoPedidoItens.forEach(it => subtotal += (it.precoUnit*it.qtd)*(1-(parseFloat(it.descontoPerc)||0)/100));
-  const frete = parseFloat(document.getElementById('pedFrete').value) || 0;
-  const descPerc = parseFloat(document.getElementById('pedDescontoPerc').value) || 0;
-  const descReal = parseFloat(document.getElementById('pedDescontoReal').value) || 0;
-  const totalDesc = (subtotal*descPerc/100) + descReal;
-  const total = Math.max(0, subtotal + frete - totalDesc);
-  const pago = editandoPagamentos.reduce((s,p) => s + (parseFloat(p.valor)||0), 0);
-  return { subtotal, frete, descPerc, descReal, total, pago, falta: total - pago };
-}
-function atualizarTotal() {
-  const c = calcularTotalPedido();
-  document.getElementById('resSubtotal').textContent = 'R$ ' + formatarMoeda(c.subtotal);
-  document.getElementById('resFrete').textContent = 'R$ ' + formatarMoeda(c.frete);
-  document.getElementById('resTotal').textContent = 'R$ ' + formatarMoeda(c.total);
-  document.getElementById('resPago').textContent = 'R$ ' + formatarMoeda(c.pago);
-  document.getElementById('resFalta').textContent = 'R$ ' + formatarMoeda(c.falta);
-  document.getElementById('resFalta').style.color = c.falta > 0 ? '#ef4444' : '#10b981';
-}
-function solicitarAutorizacaoDesconto() {
-  if (isGestor()) {
-    descontoLiberado = true;
-    document.getElementById('pedDescontoReal').disabled = false;
-    document.getElementById('pedDescontoPerc').disabled = false;
-    renderItensPedido();
-    return;
-  }
-  solicitarAutorizacao('Liberar Desconto', 'Digite a senha do gestor.', () => {
-    descontoLiberado = true;
-    document.getElementById('pedDescontoReal').disabled = false;
-    document.getElementById('pedDescontoPerc').disabled = false;
-    renderItensPedido();
-  });
-}
-
-async function salvarPedido(finalizar) {
-  const clienteId = document.getElementById('pedCliente').value;
-  const unidadeId = document.getElementById('pedUnidade').value;
-  const modalidade = document.getElementById('pedModalidade').value;
-  if (!clienteId) return alert('Selecione o cliente.');
-  if (!editandoPedidoItens.length) return alert('Adicione itens.');
-  if (finalizar && !unidadeId) return alert('Selecione a Loja/Unidade.');
-  for (const it of editandoPedidoItens) {
-    const p = produtosCache.find(x => x.id === it.produtoId);
-    if (p && !produtoDisponivelParaVenda(p)) return alert(`⛔ O produto "${p.nome}" está ${labelStatusProduto(p).toLowerCase()} e não pode ser vendido. Remova-o do pedido.`);
-  }
-  const cortesiaSemMotivo = editandoPagamentos.find(p => p.forma === 'Crédito Loja' && parseFloat(p.valor) > 0 && !(p.motivoCortesia||'').trim());
-  if (cortesiaSemMotivo) return alert('Informe o motivo da cortesia.');
-  const calc = calcularTotalPedido();
-  if (finalizar && modalidade === 'pronta_entrega') {
-    for (const it of editandoPedidoItens) {
-      const p = produtosCache.find(x => x.id === it.produtoId);
-      if (!p) return alert('Produto removido: ' + (it.nomeSnapshot || it.produtoId));
-      if ((p.estoque||0) < it.qtd && !p.sobEncomenda) return alert(`Estoque insuficiente: ${p.nome}`);
-    }
-  }
-  const totalCortesia = editandoPagamentos.filter(p => p.forma === 'Crédito Loja').reduce((s,p) => s + (parseFloat(p.valor)||0), 0);
-  const totalDinheiro = editandoPagamentos.filter(p => p.forma === 'Dinheiro').reduce((s,p) => s + (parseFloat(p.valor)||0), 0);
-  const faturamentoReal = calc.total - totalCortesia;
-
-  if (pedidoAtual) {
-    const dados = {
-      clienteId, data: document.getElementById('pedData').value,
-      obs: document.getElementById('pedObs').value, unidadeId,
-      arquiteto: document.getElementById('pedArquiteto').value,
-      tipoNota: document.getElementById('pedTipoNota').value, modalidade,
-      canal: document.getElementById('pedCanal').value,
-      dataEntrega: document.getElementById('pedDataEntrega').value,
-      frete: calc.frete, transportadora: document.getElementById('pedTransportadora').value,
-      itens: editandoPedidoItens, pagamentos: editandoPagamentos,
-      total: calc.total, totalCortesia, faturamentoReal,
-      descontoPerc: calc.descPerc, descontoReal: calc.descReal,
-      atualizadoEm: new Date().toISOString()
-    };
-    db.collection('pedidos').doc(pedidoAtual.id).update(dados).then(() => {
-      registrarAuditoria('Edição Pedido', `${pedidoAtual.numero} | R$ ${formatarMoeda(calc.total)}`);
-      fecharModalVenda();
-      alert('📝 Pedido atualizado!');
-    }).catch(err => alert('Erro: ' + err.message));
-    return;
-  }
-
-  let numero;
-  try { numero = await gerarNumeroPedido(finalizar ? 'venda' : 'proposta'); }
-  catch (e) { return alert('Erro ao gerar número: ' + e.message); }
-
-  const novoPedido = {
-    clienteId, data: document.getElementById('pedData').value,
-    vendedor: usuarioLogado.nome, vendedorId: usuarioLogado.uid,
-    obs: document.getElementById('pedObs').value, unidadeId,
-    arquiteto: document.getElementById('pedArquiteto').value,
-    tipoNota: document.getElementById('pedTipoNota').value, modalidade,
-    canal: document.getElementById('pedCanal').value,
-    dataEntrega: document.getElementById('pedDataEntrega').value,
-    frete: calc.frete, transportadora: document.getElementById('pedTransportadora').value,
-    itens: editandoPedidoItens, pagamentos: editandoPagamentos,
-    total: calc.total, totalCortesia, faturamentoReal,
-    descontoPerc: calc.descPerc, descontoReal: calc.descReal,
-    status: finalizar ? 'venda' : 'proposta', numero,
-    criadoEm: new Date().toISOString()
-  };
-
-  if (finalizar && modalidade === 'pronta_entrega') {
-    try {
-      await db.runTransaction(async tx => {
-        const refs = editandoPedidoItens.map(it => db.collection('produtos').doc(it.produtoId));
-        const snaps = await Promise.all(refs.map(r => tx.get(r)));
-        snaps.forEach((s, i) => {
-          if (!s.exists) throw new Error('Produto não existe: ' + editandoPedidoItens[i].nomeSnapshot);
-          const atual = s.data().estoque || 0;
-          if (atual < editandoPedidoItens[i].qtd) throw new Error('Estoque insuficiente: ' + s.data().nome);
-          tx.update(refs[i], { estoque: atual - editandoPedidoItens[i].qtd, atualizadoEm: new Date().toISOString() });
-          tx.update(db.collection('produtos_publicos').doc(refs[i].id), { estoque: atual - editandoPedidoItens[i].qtd, atualizadoEm: new Date().toISOString() });
-        });
-      });
-    } catch (e) { return alert('Falha ao baixar estoque: ' + e.message); }
-  }
-
-  try {
-    await db.collection('pedidos').add(novoPedido);
-  } catch (err) {
-    return alert('❌ ERRO AO SALVAR O PEDIDO: ' + err.message);
-  }
-
-  try {
-    if (finalizar && totalDinheiro > 0) {
-      const cli = clientesCache.find(c => c.id === clienteId);
-      await db.collection('caixa').add({
-        tipo: 'venda', valor: totalDinheiro,
-        motivo: `Venda em dinheiro - Pedido ${numero}`,
-        clienteNome: cli ? cli.nome : '',
-        data: new Date().toISOString(), responsavel: usuarioLogado.nome,
-        autorizadoPor: 'Automático', pedidoNumero: numero
-      });
-    }
-  } catch (err) {
-    return alert('⚠️ PEDIDO SALVO, MAS CAIXA DEU ERRO: ' + err.message);
-  }
-
-  registrarAuditoria(finalizar ? 'Venda Finalizada' : 'Proposta Salva', `Pedido ${numero} | R$ ${formatarMoeda(calc.total)}`);
-  fecharModalVenda();
-  alert(finalizar ? '✅ Venda finalizada! Nº ' + numero : '📝 Proposta salva! Nº ' + numero);
-}
-
-/* =========================================================
-   LISTA / EDIÇÃO / CONVERSÃO / EXCLUSÃO DE PEDIDOS
-   ========================================================= */
-function renderPedidos(pagina = 1) {
-  pagPedidos = pagina;
-  let list = pedidosCache.slice();
-  if (filtroStatusPedidos === 'proposta') list = list.filter(p => p.status === 'proposta');
-  else if (filtroStatusPedidos === 'venda') list = list.filter(p => p.status === 'venda');
-  else if (filtroStatusPedidos === 'cancelada') list = list.filter(p => p.status === 'cancelada');
-  else list = list.filter(p => p.status === 'proposta' || p.status === 'venda' || p.status === 'cancelada');
-  if (isConsultor()) list = list.filter(p => p.vendedorId === usuarioLogado.uid);
-  
-  const ini = document.getElementById('pedIni')?.value;
-  const fim = document.getElementById('pedFim')?.value;
-  if (ini) list = list.filter(p => p.data >= ini);
-  if (fim) list = list.filter(p => p.data <= fim);
-  
-  list.sort((a,b) => (b.data||'').localeCompare(a.data||''));
-  const el = document.getElementById('listaPedidos');
-  if (!list.length) { el.innerHTML = '<div class="empty">Nenhum pedido.</div>'; document.getElementById('pagPedidos').innerHTML = ''; return; }
-  const paginados = paginar(list, pagina);
-  el.innerHTML = `<div class="table-wrapper"><table><thead><tr><th>Nº</th><th>Data</th><th>Cliente</th><th>Vendedor</th><th>Canal</th><th>Status</th><th>Mod.</th><th>Total</th><th>Ações</th></tr></thead><tbody>
-    ${paginados.map(p => {
-      const cli = clientesCache.find(c => c.id === p.clienteId);
-      const st = p.status === 'proposta' ? '<span class="badge badge-proposta">PROPOSTA</span>' : p.status === 'cancelada' ? '<span class="badge badge-cancelada">CANCELADA</span>' : '<span class="badge badge-ok">VENDA</span>';
-      const mod = p.modalidade === 'sob_encomenda' ? '<span class="badge badge-warn">PEDIDO</span>' : 'Pronta';
-      const btnEd = (p.status === 'proposta' || isGestor()) ? `<button class="btn btn-warn btn-sm" onclick="editarPedido('${p.id}')" title="Editar">✏️</button>` : '';
-      const btnCv = p.status === 'proposta' ? `<button class="btn btn-info btn-sm" onclick="converterEmVenda('${p.id}')" title="Converter">🔄</button>` : '';
-      return `<tr>
-        <td><strong>${escapeHtml(p.numero)}</strong></td>
-        <td>${formatarDataBR(p.data)}</td>
-        <td>${cli?escapeHtml(cli.nome):'?'}</td>
-        <td>${escapeHtml(p.vendedor)}</td>
-        <td>${escapeHtml(p.canal||'-')}</td>
-        <td>${st}</td><td>${mod}</td>
-        <td>R$ ${formatarMoeda(p.total||0)}</td>
-        <td>
-          <button class="btn btn-primary btn-sm" onclick="abrirComanda('${p.id}')" title="Comanda">🖨️</button>
-          ${btnEd}${btnCv}
-          <button class="btn btn-danger btn-sm" onclick="excluirPedido('${p.id}')" title="Excluir">🗑️</button>
-        </td></tr>`;
-    }).join('')}</tbody></table></div>`;
-  renderPaginacao(list.length, pagina, 'pagPedidos', 'renderPedidos');
-}
-function editarPedido(id) {
-  const p = pedidosCache.find(x => x.id === id);
-  if (!p) return;
-  if (p.status === 'proposta') {
-    abrirModalVenda('proposta', p);
-  } else {
-    solicitarAutorizacao('Editar Venda Confirmada', 'Digite a senha do gestor para editar esta venda.', () => {
-      abrirModalVenda('venda', p);
-    });
-  }
-}
-function converterEmVenda(id) {
-  const p = pedidosCache.find(x => x.id === id);
-  if (!p || p.status !== 'proposta') return alert('Este pedido não é proposta.');
-  if (!confirm(`Converter a proposta ${p.numero} em VENDA?`)) return;
-  const cortSemMotivo = (p.pagamentos||[]).find(pg => pg.forma === 'Crédito Loja' && parseFloat(pg.valor) > 0 && !(pg.motivoCortesia||'').trim());
-  if (cortSemMotivo) return alert('Proposta tem cortesia sem motivo. Edite antes de converter.');
-  if (p.modalidade === 'pronta_entrega') {
-    for (const it of p.itens) {
-      const prod = produtosCache.find(x => x.id === it.produtoId);
-      if (prod && (prod.estoque||0) < it.qtd) return alert(`Estoque insuficiente: ${prod.nome}`);
-    }
-  }
-  gerarNumeroPedido('venda').then(novoNumero => {
-    return db.collection('pedidos').doc(id).update({ status: 'venda', numero: novoNumero, atualizadoEm: new Date().toISOString() }).then(async () => {
-      if (p.modalidade === 'pronta_entrega') {
-        await db.runTransaction(async tx => {
-          for (const it of p.itens) {
-            const ref = db.collection('produtos').doc(it.produtoId);
-            const snap = await tx.get(ref);
-            if (!snap.exists) continue;
-            const atual = snap.data().estoque || 0;
-            tx.update(ref, { estoque: atual - it.qtd, atualizadoEm: new Date().toISOString() });
-            tx.update(db.collection('produtos_publicos').doc(it.produtoId), { estoque: atual - it.qtd, atualizadoEm: new Date().toISOString() });
-          }
-        });
-      }
-      const totDin = (p.pagamentos||[]).filter(pg => pg.forma === 'Dinheiro').reduce((s,pg) => s + (parseFloat(pg.valor)||0), 0);
-      if (totDin > 0) {
-        const cli = clientesCache.find(c => c.id === p.clienteId);
-        await db.collection('caixa').add({
-          tipo: 'venda', valor: totDin, motivo: `Venda em dinheiro - Pedido ${novoNumero}`,
-          clienteNome: cli ? cli.nome : '',
-          data: new Date().toISOString(), responsavel: usuarioLogado.nome,
-          autorizadoPor: 'Automático (Conversão)', pedidoNumero: novoNumero
-        });
-      }
-      registrarAuditoria('Proposta Convertida', `${p.numero} → ${novoNumero}`);
-      alert(`✅ Convertida! Nº ${novoNumero}`);
-    });
-  }).catch(err => alert('Erro: ' + err.message));
-}
-function excluirPedido(id) {
-  const pedido = pedidosCache.find(p => p.id === id);
-  if (!pedido) return;
-  solicitarAutorizacao('Excluir Pedido', 'Digite a senha do gestor. Estoque será devolvido se venda pronta-entrega.', () => {
-    const tarefa = async () => {
-      if (pedido.status === 'venda' && pedido.modalidade === 'pronta_entrega') {
-        await db.runTransaction(async tx => {
-          for (const it of pedido.itens) {
-            const ref = db.collection('produtos').doc(it.produtoId);
-            const snap = await tx.get(ref);
-            if (!snap.exists) continue;
-            const atual = snap.data().estoque || 0;
-            tx.update(ref, { estoque: atual + parseInt(it.qtd), atualizadoEm: new Date().toISOString() });
-            tx.update(db.collection('produtos_publicos').doc(it.produtoId), { estoque: atual + parseInt(it.qtd), atualizadoEm: new Date().toISOString() });
-          }
-        });
-      }
-      await db.collection('pedidos').doc(id).delete();
-      registrarAuditoria('Exclusão Pedido', pedido.numero);
-      alert('✅ Pedido excluído.');
-    };
-    tarefa().catch(err => alert('Erro: ' + err.message));
-  });
-}
-
-/* =========================================================
-   COMANDA COM LOGO (PAISAGEM)
-   ========================================================= */
-function montarHTMLComanda(p, c) {
-  c = c || {};
-  const dataFmt = formatarDataBR(p.data);
-  
-  let pgTexto = '';
-  (p.pagamentos||[]).forEach(pg => {
-    if (pg.forma === 'Cartão de Crédito') pgTexto += `( X ) CARTÃO DE CRÉDITO - ${pg.bandeira} ${pg.parcelas}x  `;
-    if (pg.forma === 'Cartão de Débito') pgTexto += `( X ) CARTÃO DE DÉBITO - ${pg.bandeira}  `;
-    if (pg.forma === 'Dinheiro') pgTexto += `( X ) DINHEIRO  `;
-    if (pg.forma === 'PIX') pgTexto += `( X ) PIX  `;
-    if (pg.forma === 'Crédito Loja') pgTexto += `( X ) CORTESIA  `;
-  });
-  if (!pgTexto) pgTexto = '( ) CARTÃO ( ) DINHEIRO ( ) PIX';
-
-  let temDinheiro = false;
-  let valorDinheiro = 0;
-  (p.pagamentos||[]).forEach(pg => {
-    if (pg.forma === 'Dinheiro') { temDinheiro = true; valorDinheiro += parseFloat(pg.valor)||0; }
-  });
-
-  const cel = 'border:1px solid #000; padding:3px; vertical-align:top; font-size:11px; color:#000;';
-  const th = 'border:1px solid #000; padding:3px; font-size:9px; font-weight:bold; background:#f0f0f0; text-align:left; color:#000;';
-  
-  const linhasItens = (p.itens||[]).map(i => {
-    const prod = produtosCache.find(x => x.id === i.produtoId);
-    const sku = i.skuSnapshot || (prod ? prod.sku : '-');
-    const nome = i.nomeSnapshot || (prod ? prod.nome : '?');
-    const un = i.unidadeSnapshot || (prod ? (prod.unidade||'un') : 'un');
-    const desc = parseFloat(i.descontoPerc) || 0;
-    const sub = i.precoUnit * i.qtd;
-    const subFinal = sub * (1 - desc/100);
-    return `<tr>
-      <td style="${cel}">${escapeHtml(sku)}</td>
-      <td style="${cel}">${String(i.qtd).padStart(2,'0')} ${escapeHtml(un)}</td>
-      <td style="${cel}">${escapeHtml(nome)}</td>
-      <td style="${cel}">${formatarMoeda(i.precoUnit)}</td>
-      <td style="${cel}">${formatarMoeda(sub)}</td>
-      <td style="${cel}">${desc > 0 ? desc.toFixed(2) : ''}</td>
-      <td style="${cel}">${formatarMoeda(subFinal)}</td>
-    </tr>`;
-  }).join('');
-
-  const blanks = Math.max(0, 4 - (p.itens||[]).length);
-  const linhasBranco = Array(blanks).fill(`<tr><td style="${cel}">&nbsp;</td><td style="${cel}"></td><td style="${cel}"></td><td style="${cel}"></td><td style="${cel}"></td><td style="${cel}"></td><td style="${cel}"></td></tr>`).join('');
-
-  const checkPE = p.modalidade === 'pronta_entrega' ? 'X' : ' ';
-  const checkSE = p.modalidade === 'sob_encomenda' ? 'X' : ' ';
-
-  return `
-  <div style="font-family: Calibri, Arial, sans-serif; color:#000; font-size:11px; background:#fff; width:100%;">
-    <table style="width:100%; border-collapse:collapse; margin-bottom:5px;">
-      <tr>
-        <td style="width:200px; text-align:center; vertical-align:middle;">
-          <img src="${LOGO_URL}" style="width: 200px; height: auto; object-fit: contain; display: block;" alt="Logo" onerror="this.style.display='none'">
-        </td>
-        <td style="text-align:center; vertical-align:middle;">
-          <div style="font-family:serif; font-size:18px; font-weight:bold; margin-bottom:2px;">HONG & CAVALCANTI TECIDOS E DECORACOES LTDA</div>
-          <div style="font-size:10px;">CNPJ: 14.928.950/0001-95 | IE: 15.360.075-6</div>
-          <div style="font-size:10px;">Rua dos Mundurucus, 1531, Batista Campos, Belém - PA</div>
-          <div style="font-size:12px; font-weight:bold; margin-top:4px;">FICHA PARA VENDA / EMISSÃO DE NOTA FISCAL</div>
-        </td>
-        <td style="width:100px;"></td>
-      </tr>
-    </table>
-    
-    <div style="border:1px solid #000; padding:4px; text-align:center; font-weight:bold; font-size:12px; margin-bottom:5px;">
-      MODALIDADE: ( ${checkPE} ) PRONTA ENTREGA &nbsp;&nbsp;&nbsp;&nbsp; ( ${checkSE} ) PEDIDOS
-    </div>
-
-    <table style="width:100%; border-collapse:collapse;">
-      <tr>
-        <td style="${cel} width:50%;"><b>CLIENTE:</b><br>${escapeHtml(c.nome||'')}</td>
-        <td style="${cel} width:30%;"><b>NOME FANTASIA:</b><br>${escapeHtml(c.fantasia||'')}</td>
-        <td style="${cel} width:20%;"><b>CPF/CNPJ:</b><br>${escapeHtml(c.cpf || (c.estrangeiro?'Estrangeiro':''))}</td>
-      </tr>
-      <tr>
-        <td style="${cel}"><b>INSCRIÇÃO ESTADUAL:</b> ${escapeHtml(c.ie||'')}</td>
-        <td colspan="2" style="${cel} font-size:9px;">
-          <b>CONTRIBUINTE:</b>
-          ( ${c.tipoContrib==='Isento'?'X':' '} ) IE ISENTO
-          ( ${c.tipoContrib==='Contribuinte ICMS'?'X':' '} ) CONTRIBUINTE ICMS
-          ( ${c.tipoContrib==='Não Contribuinte'?'X':' '} ) NÃO CONTRIBUINTE
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2" style="${cel}"><b>ENDEREÇO:</b> ${escapeHtml((c.endereco||'') + ' ' + (c.numero||'') + ' ' + (c.compl||'') + ' ' + (c.bairro||''))}</td>
-        <td style="${cel}"><b>CEP:</b> ${escapeHtml(c.cep||'')}</td>
-      </tr>
-      <tr>
-        <td style="${cel}"><b>COMPLEMENTO:</b> ${escapeHtml(c.compl||'')}</td>
-        <td style="${cel}"><b>TELEFONE:</b> ${escapeHtml(c.telefone||c.whatsapp||'')}</td>
-        <td style="${cel}"><b>E-MAIL:</b> ${escapeHtml(c.email||'')}</td>
-      </tr>
-      <tr>
-        <td colspan="2" style="${cel}"><b>CIDADE:</b> ${escapeHtml(c.cidade||'')} ${c.uf?'/'+escapeHtml(c.uf):''}</td>
-        <td style="${cel} font-size:9px;">
-          <b>TIPO DE NOTA:</b>
-          ( ${p.tipoNota==='NF-e'?'X':' '} ) NF-e
-          ( ${p.tipoNota==='NFC-e'?'X':' '} ) NFC-e
-          ( ${p.tipoNota==='CUPOM NÃO FISCAL'?'X':' '} ) CUPOM
-        </td>
-      </tr>
-      <tr><td colspan="3" style="${cel}"><b>ARQUITETO:</b> ${escapeHtml(p.arquiteto || c.arquiteto || '')}</td></tr>
-      <tr>
-        <td colspan="3" style="${cel} font-size:10px;">
-          <b>FORMA DE PAGAMENTO:</b> ${pgTexto}
-        </td>
-      </tr>
-    </table>
-
-    <table style="width:100%; border-collapse:collapse; margin-top:0;">
-      <thead>
-        <tr>
-          <th style="${th} width:10%;">REFERÊNCIA</th>
-          <th style="${th} width:8%;">QT/MP</th>
-          <th style="${th}">DESCRIÇÃO/BOOK</th>
-          <th style="${th} width:10%;">VALOR UNIT.</th>
-          <th style="${th} width:10%;">TOTAL</th>
-          <th style="${th} width:8%;">DESCONTO</th>
-          <th style="${th} width:10%;">TOTAL C/ DESC</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${linhasItens}${linhasBranco}
-      </tbody>
-    </table>
-
-    <table style="width:100%; border-collapse:collapse; margin-top:0;">
-      <tr>
-        <td style="${cel} height:30px; vertical-align:top;" colspan="2"><b>Obs:</b> ${escapeHtml(p.obs||'')}</td>
-      </tr>
-    </table>
-
-    <table style="width:100%; border-collapse:collapse; margin-top:0;">
-      <tr>
-        <td style="${cel} width:40%;"><b>VENDEDOR:</b><br>${escapeHtml(p.vendedor||'')}</td>
-        <td style="${cel} width:30%;"><b>RETIRADO POR:</b><br>${escapeHtml(p.retiradoPor||'')}</td>
-        <td style="${cel} width:30%;"><b>TOTAL:</b> <span style="font-size:14px; font-weight:bold;">R$ ${formatarMoeda(p.total||0)}</span></td>
-      </tr>
-      <tr>
-        <td colspan="3" style="${cel}"><b>DATA DA VENDA:</b> ${dataFmt}</td>
-      </tr>
-    </table>
-
-    ${temDinheiro ? `
-    <div style="margin-top: 20px; border: 2px dashed #000; padding: 10px; background:#fff;">
-      <div style="text-align:center; font-weight:bold; font-size:12px; margin-bottom:8px;">RECIBO DE PAGAMENTO EM ESPÉCIE</div>
-      <div style="font-size:11px;">RECEBI DE: <b>${escapeHtml(c.nome||'')}</b> (CPF/CNPJ: ${escapeHtml(c.cpf||'')})</div>
-      <div style="font-size:11px; margin-top:4px;">A IMPORTÂNCIA DE: <b>R$ ${formatarMoeda(valorDinheiro)}</b></div>
-      <div style="font-size:11px; margin-top:4px;">REFERENTE AOS PRODUTOS: ${(p.itens||[]).map(i => escapeHtml(i.nomeSnapshot||'')).join(', ')}</div>
-      <div style="margin-top: 20px; display:flex; justify-content:space-between; font-size:10px;">
-        <span>DATA: ${dataFmt}</span>
-        <span>ASSINATURA: ________________________________________</span>
-      </div>
-    </div>
-    ` : ''}
-  </div>`;
-}
-function abrirComanda(id) {
-  const p = pedidosCache.find(x => x.id === id); if (!p) return;
-  if (!produtosCache.length) return alert('Aguarde sincronização dos produtos.');
-  const c = clientesCache.find(x => x.id === p.clienteId) || {};
-  document.getElementById('printSection').innerHTML = montarHTMLComanda(p, c);
-  document.getElementById('btnConfirmarComanda').style.display = 'none';
-  document.getElementById('modalComanda').classList.add('active');
-}
-function preVisualizarComanda() {
-  if (!editandoPedidoItens.length) return alert('Adicione itens antes de visualizar.');
-  const clienteId = document.getElementById('pedCliente').value;
-  if (!clienteId) return alert('Selecione o cliente.');
-  const c = clientesCache.find(x => x.id === clienteId) || {};
-  const calc = calcularTotalPedido();
-  const temp = {
-    numero: 'PRÉVIA', status: 'previa', vendedor: usuarioLogado.nome,
-    data: document.getElementById('pedData').value, obs: document.getElementById('pedObs').value,
-    modalidade: document.getElementById('pedModalidade').value, itens: editandoPedidoItens,
-    pagamentos: editandoPagamentos, total: calc.total,
-    tipoNota: document.getElementById('pedTipoNota').value, arquiteto: document.getElementById('pedArquiteto').value
-  };
-  document.getElementById('printSection').innerHTML = montarHTMLComanda(temp, c);
-  document.getElementById('btnConfirmarComanda').style.display = 'inline-block';
-  document.getElementById('modalComanda').classList.add('active');
-}
-function fecharComanda() {
-  document.getElementById('modalComanda').classList.remove('active');
-  document.getElementById('printSection').innerHTML = '';
-}
-function confirmarComanda() { fecharComanda(); salvarPedido(true); }
-
-/* =========================================================
-   AUTORIZAÇÃO (senha do gestor)
-   ========================================================= */
-function solicitarAutorizacao(titulo, msg, cb) {
-  document.getElementById('tituloAutorizacao').textContent = titulo;
-  document.getElementById('mensagemAutorizacao').textContent = msg;
-  document.getElementById('senhaAutorizacao').value = '';
-  document.getElementById('alertAutorizacao').style.display = 'none';
-  acaoPendente = cb;
-  document.getElementById('modalAutorizacao').classList.add('active');
-}
-function fecharAutorizacao() { document.getElementById('modalAutorizacao').classList.remove('active'); acaoPendente = null; }
-function confirmarAutorizacao() {
-  const senha = document.getElementById('senhaAutorizacao').value;
-  if (!senha) return;
-  const appName = 'SecondaryAuth' + Date.now();
-  const secondaryApp = firebase.initializeApp(firebase.app().options, appName);
-  const secondaryAuth = secondaryApp.auth();
-  secondaryAuth.signInWithEmailAndPassword(auth.currentUser.email, senha)
-    .then(() => { if (acaoPendente) acaoPendente(); fecharAutorizacao(); return secondaryApp.delete(); })
-    .catch(() => {
-      document.getElementById('alertAutorizacao').className = 'alert-box error';
-      document.getElementById('alertAutorizacao').textContent = 'Senha inválida.';
-      document.getElementById('alertAutorizacao').style.display = 'block';
-      return secondaryApp.delete().catch(()=>{});
-    });
-}
-
-/* =========================================================
-   CAIXA
-   ========================================================= */
-function renderCaixa(pagina = 1) {
-  pagCaixa = pagina;
-  
-  let saldoDinheiro = 0;
-  caixaCache.forEach(c => {
-    if (c.tipo === 'suprimento' || c.tipo === 'recebimento' || c.tipo === 'venda') saldoDinheiro += c.valor;
-    else saldoDinheiro -= c.valor;
-  });
-
-  const hoje = hojeLocalISO();
-  document.getElementById('caixaCards').innerHTML = `
-    <div class="card" style="border-left-color:var(--success)"><h3>Saldo em Espécie (Geral)</h3><div class="value green">R$ ${formatarMoeda(saldoDinheiro)}</div></div>
-    <div class="card" style="border-left-color:var(--warn)"><h3>Suprimentos/Receb. (Hoje)</h3><div class="value">R$ ${formatarMoeda(caixaCache.filter(c => dataLocalDeISO(c.data) === hoje && (c.tipo==='suprimento'||c.tipo==='recebimento')).reduce((s,c)=>s+c.valor,0))}</div></div>
-    <div class="card" style="border-left-color:var(--danger)"><h3>Sangrias (Hoje)</h3><div class="value" style="color:var(--danger)">R$ ${formatarMoeda(caixaCache.filter(c => dataLocalDeISO(c.data) === hoje && c.tipo==='sangria').reduce((s,c)=>s+c.valor,0))}</div></div>`;
-
-  let list = [...caixaCache].sort((a,b) => (b.data||'').localeCompare(a.data||''));
-  const termo = buscaCaixa.toLowerCase();
-  if (termo) {
-    list = list.filter(c => 
-      (c.clienteNome||'').toLowerCase().includes(termo) || 
-      (c.motivo||'').toLowerCase().includes(termo) ||
-      formatarDataHoraBR(c.data).includes(termo)
-    );
-  }
-
-  const paginados = paginar(list, pagina);
-  document.getElementById('listaCaixa').innerHTML = list.length ? `<div class="table-wrapper"><table><thead><tr><th>Data</th><th>Tipo</th><th>Cliente</th><th>Valor</th><th>Motivo</th><th>Ações</th></tr></thead><tbody>
-    ${paginados.map(c => {
-      const lbl = c.tipo === 'venda' ? 'VENDA' : c.tipo === 'recebimento' ? 'RECEBIMENTO' : c.tipo.toUpperCase();
-      const bc = (c.tipo==='suprimento'||c.tipo==='recebimento'||c.tipo==='venda') ? 'badge-ok' : 'badge-out';
-      return `<tr><td>${formatarDataHoraBR(c.data)}</td><td><span class="badge ${bc}">${lbl}</span></td>
-        <td>${escapeHtml(c.clienteNome||'-')}</td>
-        <td>R$ ${formatarMoeda(c.valor||0)}</td>
-        <td>${escapeHtml(c.motivo)}${c.quemEntregou?'<br><small>Entregue por: '+escapeHtml(c.quemEntregou)+'</small>':''}</td>
-        <td><button class="btn btn-primary btn-sm" onclick="imprimirRecibo('${c.id}')">🖨️</button>
-        <button class="btn btn-warn btn-sm" onclick="editarMovCaixa('${c.id}')">✏️</button>
-        <button class="btn btn-danger btn-sm" onclick="excluirMovCaixa('${c.id}')">🗑️</button></td></tr>`;
-    }).join('')}</tbody></table></div>` : '<div class="empty">Nenhuma movimentação encontrada.</div>';
-  
-  renderPaginacao(list.length, pagina, 'pagCaixa', 'renderCaixa');
-}
-
-function abrirModalCaixa(tipo) {
-  document.getElementById('tipoCaixa').value = tipo;
-  const t = { suprimento:'Lançar Suprimento', sangria:'Lançar Sangria', recebimento:'Receber Pagamento Pendente' };
-  document.getElementById('tituloModalCaixa').textContent = t[tipo];
-  document.getElementById('caixaValor').value = '';
-  document.getElementById('caixaMotivo').value = '';
-  document.getElementById('caixaSenha').value = '';
-  document.getElementById('camposRecebimento').innerHTML = '';
-  const gs = document.getElementById('grupoSenhaCaixa');
-  if (tipo === 'suprimento') {
-    gs.style.display = 'none';
-    document.getElementById('camposRecebimento').innerHTML = `<div class="form-group" style="margin-bottom:12px"><label>Quem entregou</label><input id="recebNomePagador" value="${escapeHtml(usuarioLogado.nome)}" readonly></div>`;
-  } else if (tipo === 'sangria') {
-    gs.style.display = 'flex';
-  } else {
-    gs.style.display = 'flex';
-    document.getElementById('camposRecebimento').innerHTML = `
-      <div class="form-group" style="margin-bottom:12px"><label>Quem pagou *</label><input id="recebNomePagador"></div>
-      <div class="form-group" style="margin-bottom:12px"><label>Produto pago *</label><input id="recebProduto"></div>`;
-  }
-  document.getElementById('alertCaixa').style.display = 'none';
-  document.getElementById('modalCaixa').classList.add('active');
-}
-function fecharModalCaixa() { document.getElementById('modalCaixa').classList.remove('active'); }
-function salvarCaixa() {
-  const tipo = document.getElementById('tipoCaixa').value;
-  const valor = parseFloat(document.getElementById('caixaValor').value);
-  let motivo = document.getElementById('caixaMotivo').value.trim();
-  const senha = document.getElementById('caixaSenha').value;
-  const nomeEnt = (document.getElementById('recebNomePagador')||{}).value || '';
-  if (!valor || valor <= 0) return showAlert(document.getElementById('alertCaixa'), 'Informe um valor válido.', 'error');
-  if (tipo === 'suprimento') {
-    if (!nomeEnt) return showAlert(document.getElementById('alertCaixa'), 'Informe quem entregou.', 'error');
-    if (!motivo) motivo = `Suprimento por ${nomeEnt}`;
-    db.collection('caixa').add({ tipo, valor, motivo, data: new Date().toISOString(), responsavel: usuarioLogado.nome, quemEntregou: nomeEnt, autorizadoPor: 'Não requer', clienteNome: '' })
-      .then(() => { registrarAuditoria('Suprimento', `R$ ${formatarMoeda(valor)} | ${nomeEnt}`); fecharModalCaixa(); alert('✅ Lançado!'); });
-    return;
-  }
-  if (!senha) return showAlert(document.getElementById('alertCaixa'), 'Digite a senha do gestor.', 'error');
-  if (tipo === 'recebimento') {
-    const prod = (document.getElementById('recebProduto')||{}).value || '';
-    if (!nomeEnt) return showAlert(document.getElementById('alertCaixa'), 'Informe quem pagou.', 'error');
-    if (!prod) return showAlert(document.getElementById('alertCaixa'), 'Informe o produto pago.', 'error');
-    motivo = `Recebido de ${nomeEnt} - ${prod}${motivo?' ('+motivo+')':''}`;
-  } else if (!motivo) {
-    return showAlert(document.getElementById('alertCaixa'), 'Informe o motivo.', 'error');
-  }
-  const appName = 'CaixaAuth' + Date.now();
-  const sa = firebase.initializeApp(firebase.app().options, appName);
-  sa.auth().signInWithEmailAndPassword(auth.currentUser.email, senha)
-    .then(() => db.collection('caixa').add({ tipo, valor, motivo, data: new Date().toISOString(), responsavel: usuarioLogado.nome, autorizadoPor: 'Gestor', clienteNome: nomeEnt || '' }))
-    .then(() => { registrarAuditoria('Mov. Caixa', `${tipo.toUpperCase()} | R$ ${formatarMoeda(valor)}`); fecharModalCaixa(); alert('✅ Salvo!'); return sa.delete(); })
-    .catch(() => { document.getElementById('alertCaixa').className = 'alert-box error'; document.getElementById('alertCaixa').textContent = 'Senha incorreta.'; document.getElementById('alertCaixa').style.display = 'block'; return sa.delete().catch(()=>{}); });
-}
-function editarMovCaixa(id) {
-  const c = caixaCache.find(x => x.id === id); if (!c) return;
-  document.getElementById('editCaixaId').value = id;
-  document.getElementById('editCaixaTipo').value = (c.tipo || '').toUpperCase();
-  document.getElementById('editCaixaValor').value = c.valor || 0;
-  document.getElementById('editCaixaMotivo').value = c.motivo || '';
-  document.getElementById('editCaixaCliente').value = c.clienteNome || c.quemEntregou || '';
-  document.getElementById('alertEditarCaixa').style.display = 'none';
-  solicitarAutorizacao('Editar Mov. de Caixa', 'Digite a senha do gestor para liberar a edição.', () => {
-    document.getElementById('modalEditarCaixa').classList.add('active');
-  });
-}
-function fecharModalEditarCaixa() { document.getElementById('modalEditarCaixa').classList.remove('active'); }
-function salvarEdicaoCaixa() {
-  const id = document.getElementById('editCaixaId').value;
-  const valor = parseFloat(document.getElementById('editCaixaValor').value);
-  const motivo = document.getElementById('editCaixaMotivo').value.trim();
-  const cliente = document.getElementById('editCaixaCliente').value.trim();
-  if (!valor || valor <= 0) return showAlert(document.getElementById('alertEditarCaixa'), 'Informe um valor válido.', 'error');
-  if (!motivo) return showAlert(document.getElementById('alertEditarCaixa'), 'Informe o motivo.', 'error');
-  const c = caixaCache.find(x => x.id === id);
-  if (!c) return showAlert(document.getElementById('alertEditarCaixa'), 'Movimentação não encontrada.', 'error');
-  const upd = { valor, motivo };
-  if (c.tipo === 'suprimento' || c.tipo === 'venda' || c.tipo === 'recebimento') upd.clienteNome = cliente;
-  else upd.quemEntregou = cliente;
-  db.collection('caixa').doc(id).update(upd).then(() => {
-    registrarAuditoria('Edição Caixa', `${c.tipo} | R$ ${formatarMoeda(valor)} | ${motivo}`);
-    fecharModalEditarCaixa();
-    alert('✅ Movimentação atualizada!');
-  }).catch(err => showAlert(document.getElementById('alertEditarCaixa'), 'Erro: ' + err.message, 'error'));
-}
-function excluirMovCaixa(id) {
-  solicitarAutorizacao('Excluir Mov.', 'Digite a senha do gestor.', () => {
-    db.collection('caixa').doc(id).delete().then(() => { registrarAuditoria('Exclusão Caixa', id); alert('✅ Excluído!'); });
-  });
-}
-function imprimirRecibo(id) {
-  const c = caixaCache.find(x => x.id === id); if (!c) return;
-  const t = c.tipo === 'venda' ? 'RECIBO DE VENDA' : c.tipo === 'recebimento' ? 'RECIBO DE RECEBIMENTO' : c.tipo === 'suprimento' ? 'RECIBO DE SUPRIMENTO' : 'RECIBO DE SANGRIA';
-  const cel = 'border:1px solid #000; padding:4px;';
-  document.getElementById('printSection').innerHTML = `
-    <div style="text-align:center; margin-bottom:16px;">
-      <h1 style="font-family:serif; font-size:20px; letter-spacing:2px;">HONG DECOR</h1>
-      <div style="font-size:10px;">HONG & CAVALCANTI TECIDOS E DECORACOES LTDA - ME</div>
-      <div style="font-size:10px;">CNPJ: 14.928.950/0001-95</div>
-      <div style="font-size:13px; font-weight:bold; margin-top:8px;">${t}</div>
-      <div style="font-size:11px;">Nº REC-${(c.id||'').slice(-4).toUpperCase()}</div>
-    </div>
-    <table style="width:100%; border-collapse:collapse; font-size:11px;">
-      <tr><td style="${cel}"><b>DATA:</b> ${formatarDataHoraBR(c.data)}</td></tr>
-      <tr><td style="${cel} font-size:15px;"><b>VALOR:</b> R$ ${formatarMoeda(c.valor||0)}</td></tr>
-      <tr><td style="${cel}"><b>MOTIVO:</b> ${escapeHtml(c.motivo)}</td></tr>
-      ${c.clienteNome ? `<tr><td style="${cel}"><b>CLIENTE:</b> ${escapeHtml(c.clienteNome)}</td></tr>` : ''}
-      ${c.quemEntregou ? `<tr><td style="${cel}"><b>ENTREGUE POR:</b> ${escapeHtml(c.quemEntregou)}</td></tr>` : ''}
-    </table>
-    <div style="margin-top:36px; text-align:center;">
-      <div style="border-top:1px solid #000; width:70%; margin:0 auto; padding-top:4px; font-size:10px;">Assinatura do Responsável</div>
-      <div style="font-size:10px;">Nome: ${escapeHtml(c.responsavel||'')}</div>
-    </div>
-    <div style="margin-top:12px; font-size:9px; text-align:center; color:#555;">Documento interno sem valor fiscal.</div>`;
-  document.getElementById('btnConfirmarComanda').style.display = 'none';
-  document.getElementById('modalComanda').classList.add('active');
-}
-
-/* =========================================================
-   ETIQUETAS (Code 128 para código interno, EAN13 para EAN de fabricante)
-   ========================================================= */
-function abrirEtiquetaPorId(id) {
-  const p = produtosCache.find(x => x.id === id);
-  if (!p) return alert('Produto não encontrado.');
-  const ean = p.ean || gerarEANInternoUnico();
-  const usarCode128 = p.eanInterno || !/^\d{13}$/.test(ean);
-  document.getElementById('etiquetaPreview').innerHTML = `
-    <div style="width:50mm; margin:0 auto; text-align:center; font-family:Arial; border:1px solid #ccc; padding:4px;">
-      <div style="font-size:10px; font-weight:bold;">HONG DECOR</div>
-      <div style="font-size:8px;">${escapeHtml(p.nome)}</div>
-      <div style="font-size:7px; color:#666;">Ref: ${escapeHtml(p.sku||'')}</div>
-      <svg id="barcodeEtiqueta"></svg>
-      <div style="font-size:8px;">${ean}</div>
-    </div>
-  `;
-  document.getElementById('modalEtiqueta').classList.add('active');
-  setTimeout(() => {
-    try {
-      if (usarCode128) {
-        JsBarcode("#barcodeEtiqueta", ean, { format: "CODE128", width: 1.2, height: 40, displayValue: false });
-      } else {
-        JsBarcode("#barcodeEtiqueta", ean, { format: "EAN13", width: 1.2, height: 40, displayValue: false });
-      }
-    } catch(e) { console.warn('Erro ao gerar código de barras:', e); }
-  }, 100);
-}
-function abrirModalEtiqueta() {
-  if (!editandoProdutoId) return alert('Salve o produto antes de gerar a etiqueta, ou use o botão 🖨️ na lista.');
-  abrirEtiquetaPorId(editandoProdutoId);
-}
-function fecharModalEtiqueta() { document.getElementById('modalEtiqueta').classList.remove('active'); }
-function imprimirEtiqueta() {
-  const conteudo = document.getElementById('etiquetaPreview').innerHTML;
-  const win = window.open('', '_blank');
-  win.document.write(`<html><head><title>Etiqueta</title></head><body onload="window.print();window.close()">${conteudo}</body></html>`);
-  win.document.close();
-}
-
-/* =========================================================
-   DASHBOARD
-   ========================================================= */
-function renderDashboard() {
-  const ini = document.getElementById('dashIni')?.value;
-  const fim = document.getElementById('dashFim')?.value;
-  let vendasMes = pedidosCache.filter(p => p.status === 'venda');
-  if (ini) vendasMes = vendasMes.filter(p => p.data >= ini);
-  if (fim) vendasMes = vendasMes.filter(p => p.data <= fim);
-  if (!ini && !fim) {
-    const mesAtual = hojeLocalISO().slice(0,7);
-    vendasMes = vendasMes.filter(p => dataLocalDeISO(p.data).slice(0,7) === mesAtual);
-  }
-  
-  const propAbertas = pedidosCache.filter(p => p.status === 'proposta');
-  const fatMes = vendasMes.reduce((s,p) => s + (p.faturamentoReal !== undefined ? p.faturamentoReal : p.total), 0);
-  const baixo = produtosCache.filter(p => p.estoque <= p.min).length;
-  document.getElementById('dashCards').innerHTML = `
-    <div class="card"><h3>Faturamento (Período)</h3><div class="value green">R$ ${formatarMoeda(fatMes)}</div></div>
-    <div class="card"><h3>Vendas (Período)</h3><div class="value">${vendasMes.length}</div></div>
-    <div class="card"><h3>Propostas Abertas</h3><div class="value" style="color:#667eea">${propAbertas.length}</div></div>
-    <div class="card"><h3>Produtos</h3><div class="value">${produtosCache.length}</div></div>
-    <div class="card"><h3>Alerta Estoque</h3><div class="value" style="color:#ef4444">${baixo}</div></div>`;
-  const tv = {};
-  vendasMes.forEach(p => { tv[p.vendedor] = (tv[p.vendedor]||0) + (p.faturamentoReal !== undefined ? p.faturamentoReal : p.total); });
-  const tvArr = Object.entries(tv).sort((a,b) => b[1]-a[1]).slice(0,5);
-  document.getElementById('topVendedores').innerHTML = tvArr.length ? `<table>${tvArr.map((v,i) => `<tr><td>${i+1}º</td><td>${escapeHtml(v[0])}</td><td style="text-align:right; font-weight:bold">R$ ${formatarMoeda(v[1])}</td></tr>`).join('')}</table>` : '<div class="empty">Sem vendas neste período.</div>';
-  const zer = produtosCache.filter(p => p.estoque <= 0);
-  document.getElementById('produtosZerados').innerHTML = zer.length ? `<table>${zer.slice(0,10).map(p => `<tr><td>${escapeHtml(p.nome)}</td><td style="text-align:right; color:var(--danger); font-weight:bold">${p.estoque}</td></tr>`).join('')}</table>` : '<div class="empty">Nenhum produto zerado. 🎉</div>';
-  const estoqueBaixo = produtosCache.filter(p => p.estoque > 0 && p.estoque <= p.min);
-  document.getElementById('produtosEstoqueBaixo').innerHTML = estoqueBaixo.length ? `<table>${estoqueBaixo.slice(0,10).map(p => `<tr><td>${escapeHtml(p.nome)}</td><td style="text-align:right; color:var(--warn); font-weight:bold">${p.estoque}</td></tr>`).join('')}</table>` : '<div class="empty">Nenhum produto com estoque baixo. 🎉</div>';
-  const sobEnc = {};
-  pedidosCache.filter(p => p.status === 'venda' && p.modalidade === 'sob_encomenda').forEach(p => {
-    (p.itens||[]).forEach(it => {
-      if (it.recebido) return;
-      const k = it.produtoId;
-      const nome = it.nomeSnapshot || (produtosCache.find(x => x.id === it.produtoId)||{}).nome || k;
-      if (!sobEnc[k]) sobEnc[k] = { nome, qtd: 0, comprado: 0 };
-      sobEnc[k].qtd += it.qtd;
-      if (it.comprado) sobEnc[k].comprado += it.qtd;
-    });
-  });
-  const seArr = Object.values(sobEnc);
-  document.getElementById('produtosSobEncomenda').innerHTML = seArr.length ? `<table><thead><tr><th>Produto</th><th style="text-align:right">A comprar</th><th style="text-align:right">Já comprado</th></tr></thead><tbody>${seArr.map(p => `<tr><td>${escapeHtml(p.nome)}</td><td style="text-align:right; color:var(--danger); font-weight:bold">${p.qtd - p.comprado}</td><td style="text-align:right; color:var(--success)">${p.comprado}</td></tr>`).join('')}</tbody></table>` : '<div class="empty">Nenhum item pendente. 🎉</div>';
 }
 /* =========================================================
    RELATÓRIOS
@@ -3022,6 +2343,59 @@ function exportarRelatorioPDF() {
   });
   doc.autoTable({ head: [['Nº','Data','Cliente','Vendedor','Total']], body: rows, startY: 20 });
   doc.save('relatorio_vendas.pdf');
+}
+
+/* =========================================================
+   MOVIMENTAÇÃO DE ESTOQUE (RELATÓRIO)
+   ========================================================= */
+function renderMovEstoque(pagina = 1) {
+  pagMovEstoque = pagina;
+  const ini = document.getElementById('movIni')?.value;
+  const fim = document.getElementById('movFim')?.value;
+  const tipo = document.getElementById('movTipo')?.value || '';
+  const prodId = document.getElementById('movProduto')?.value || '';
+  let list = movEstoqueCache.slice();
+  if (ini) list = list.filter(m => dataLocalDeISO(m.data) >= ini);
+  if (fim) list = list.filter(m => dataLocalDeISO(m.data) <= fim);
+  if (tipo) list = list.filter(m => m.tipo === tipo);
+  if (prodId) list = list.filter(m => m.produtoId === prodId);
+  list.sort((a,b) => (b.data||'').localeCompare(a.data||''));
+  const el = document.getElementById('listaMovEstoque');
+  if (!list.length) { el.innerHTML = '<div class="empty">Nenhuma movimentação encontrada.</div>'; document.getElementById('pagMovEstoque').innerHTML = ''; return; }
+  const paginados = paginar(list, pagina);
+  el.innerHTML = `<div class="table-wrapper"><table><thead><tr><th class="col-data">Data</th><th class="col-tipo">Tipo</th><th>Produto</th><th class="col-qtd">Qtd</th><th>Fornecedor</th><th>NF</th><th class="col-valor">Frete</th><th>Usuário</th><th>Obs</th></tr></thead><tbody>
+    ${paginados.map(m => {
+      const isEntrada = m.tipo === 'entrada';
+      const badge = isEntrada ? '<span class="badge badge-entrada">ENTRADA</span>' : '<span class="badge badge-saida">SAÍDA</span>';
+      const qtd = isEntrada ? `+${m.qtd}` : `-${m.qtd}`;
+      const cor = isEntrada ? 'var(--success)' : 'var(--danger)';
+      return `<tr>
+        <td class="col-data">${formatarDataHoraBR(m.data)}</td>
+        <td class="col-tipo">${badge}</td>
+        <td>${escapeHtml(m.produto||'-')}</td>
+        <td class="col-qtd" style="color:${cor}">${qtd}</td>
+        <td>${escapeHtml(m.fornecedor||'-')}</td>
+        <td>${escapeHtml(m.nota||'-')}</td>
+        <td class="col-valor">R$ ${formatarMoeda(m.frete||0)}</td>
+        <td>${escapeHtml(m.usuario||'-')}</td>
+        <td>${escapeHtml(m.obs||'-')}</td>
+      </tr>`;
+    }).join('')}</tbody></table></div>`;
+  renderPaginacao(list.length, pagina, 'pagMovEstoque', 'renderMovEstoque');
+}
+function exportarMovEstoqueXLSX() {
+  const ini = document.getElementById('movIni')?.value;
+  const fim = document.getElementById('movFim')?.value;
+  const tipo = document.getElementById('movTipo')?.value || '';
+  const prodId = document.getElementById('movProduto')?.value || '';
+  let list = movEstoqueCache.slice();
+  if (ini) list = list.filter(m => dataLocalDeISO(m.data) >= ini);
+  if (fim) list = list.filter(m => dataLocalDeISO(m.data) <= fim);
+  if (tipo) list = list.filter(m => m.tipo === tipo);
+  if (prodId) list = list.filter(m => m.produtoId === prodId);
+  list.sort((a,b) => (b.data||'').localeCompare(a.data||''));
+  if (!list.length) return alert('Nenhuma movimentação.');
+  exportarXLSX(list.map(m => ({ Data: formatarDataHoraBR(m.data), Tipo: m.tipo, Produto: m.produto||'', Qtd: m.qtd, Fornecedor: m.fornecedor||'', NF: m.nota||'', Frete: m.frete||0, Usuario: m.usuario||'', Obs: m.obs||'' })), 'movimentacao_estoque', 'MovEstoque');
 }
 
 /* =========================================================
@@ -3172,7 +2546,7 @@ function exportarCaixaPDF() {
   doc.save('caixa.pdf');
 }
 function exportarBackupCompleto() {
-  const backup = { dataExportacao: new Date().toISOString(), produtos: produtosCache, clientes: clientesCache, fornecedores: fornecedoresCache, unidades: unidadesCache, pedidos: pedidosCache, caixa: caixaCache, usuarios: usuariosCache, movEstoque: movEstoqueCache };
+  const backup = { dataExportacao: new Date().toISOString(), produtos: produtosCache, clientes: clientesCache, fornecedores: fornecedoresCache, unidades: unidadesCache, pedidos: pedidosCache, caixa: caixaCache, usuarios: usuariosCache, movEstoque: movEstoqueCache, categorias: categoriasCache };
   const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
@@ -3187,7 +2561,7 @@ async function importarBackup(event) {
   reader.onload = async function(e) {
     try {
       const backup = JSON.parse(e.target.result);
-      const cols = ['produtos','clientes','fornecedores','unidades','pedidos','caixa','movEstoque'];
+      const cols = ['produtos','clientes','fornecedores','unidades','pedidos','caixa','movEstoque','categorias'];
       for (const col of cols) {
         if (!backup[col]) continue;
         const snap = await db.collection(col).get();
@@ -3220,7 +2594,7 @@ function setFiltroStatus(s) {
 }
 
 /* =========================================================
-   ESTOQUE — LANÇAMENTO
+   ESTOQUE — LANÇAMENTO (com frete)
    ========================================================= */
 function fecharModalEstoque() { document.getElementById('modalEstoque').classList.remove('active'); }
 function lancarEstoque() {
@@ -3228,6 +2602,7 @@ function lancarEstoque() {
   const fornId = document.getElementById('entFornecedor').value;
   const nota = document.getElementById('entNota').value.trim();
   const qtd = parseInt(document.getElementById('entQtd').value);
+  const frete = parseFloat(document.getElementById('entFrete').value) || 0;
   const obs = document.getElementById('entObs').value.trim();
   if (!prodId || !qtd) return showAlert(document.getElementById('alertEstoqueModal'), 'Selecione o produto e a quantidade.', 'error');
   if (!fornId) return showAlert(document.getElementById('alertEstoqueModal'), 'Selecione o fornecedor.', 'error');
@@ -3244,12 +2619,13 @@ function lancarEstoque() {
     const prod = produtosCache.find(x => x.id === prodId);
     db.collection('movEstoque').add({
       produto: prod ? prod.nome : prodId, produtoId: prodId, tipo: 'entrada', qtd,
-      fornecedor: f ? f.nome : '', fornecedorId: fornId, nota, obs,
+      fornecedor: f ? f.nome : '', fornecedorId: fornId, nota, frete, obs,
       data: new Date().toISOString(), usuario: usuarioLogado.nome
     });
-    registrarAuditoria('Entrada Estoque', `${prod ? prod.nome : prodId} | +${qtd} | Nota: ${nota}`);
+    registrarAuditoria('Entrada Estoque', `${prod ? prod.nome : prodId} | +${qtd} | Frete: R$ ${formatarMoeda(frete)}`);
     document.getElementById('entQtd').value = '';
     document.getElementById('entNota').value = '';
+    document.getElementById('entFrete').value = '';
     document.getElementById('entObs').value = '';
     showAlert(document.getElementById('alertEstoqueModal'), '✅ Entrada lançada com sucesso!', 'success');
   }).catch(err => showAlert(document.getElementById('alertEstoqueModal'), 'Erro: ' + err.message, 'error'));
@@ -3273,7 +2649,7 @@ async function gerarNumeroPedido(tipo) {
 }
 
 /* =========================================================
-   MODAL DE VENDA / PROPOSTA
+   MODAL DE VENDA / PROPOSTA (com dimensão no item)
    ========================================================= */
 function abrirModalVenda(tipo = 'venda', pedidoParaEditar = null) {
   pedidoAtual = pedidoParaEditar;
@@ -3337,9 +2713,11 @@ function renderItensPedido() {
     const un = it.unidadeSnapshot || (prod ? (prod.unidade || 'un') : 'un');
     const desc = parseFloat(it.descontoPerc) || 0;
     const total = (it.precoUnit * it.qtd) * (1 - desc/100);
+    const dimensao = it.dimensao || (prod ? (prod.tamanho || '') : '');
     return `<div class="item-row">
       <input type="number" min="1" value="${it.qtd}" onchange="atualizarItem(${idx},'qtd',this.value)">
       <div style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:600" title="${escapeHtml(nome)}">${escapeHtml(nome)}<br><small style="color:var(--text-light)">${escapeHtml(sku)}</small></div>
+      <input type="text" value="${escapeHtml(dimensao)}" onchange="atualizarItem(${idx},'dimensao',this.value)" placeholder="Ex: 1,20 x 1,60" title="Dimensão do item">
       <div style="font-size:12px; color:var(--text-light)">${escapeHtml(un)}</div>
       <input type="number" step="0.01" value="${it.precoUnit}" onchange="atualizarItem(${idx},'precoUnit',this.value)">
       <input type="number" step="1" value="${desc}" onchange="atualizarItem(${idx},'descontoPerc',this.value)" ${descontoLiberado?'':'disabled title="Bloqueado — solicite liberação"'}>
@@ -3350,7 +2728,8 @@ function renderItensPedido() {
   atualizarTotal();
 }
 function atualizarItem(idx, campo, valor) {
-  editandoPedidoItens[idx][campo] = parseFloat(String(valor).replace(',', '.')) || 0;
+  if (campo === 'dimensao') { editandoPedidoItens[idx][campo] = String(valor || ''); }
+  else { editandoPedidoItens[idx][campo] = parseFloat(String(valor).replace(',', '.')) || 0; }
   if (campo === 'qtd' && editandoPedidoItens[idx][campo] < 1) editandoPedidoItens[idx][campo] = 1;
   renderItensPedido();
 }
@@ -3359,13 +2738,18 @@ function removerItem(idx) { editandoPedidoItens.splice(idx, 1); renderItensPedid
 function abrirBuscaProduto() {
   document.getElementById('modalBuscaProduto').classList.add('active');
   document.getElementById('inputBuscaProduto').value = '';
+  atualizarSelects();
   renderBuscaProdutos(1);
 }
 function fecharBuscaProduto() { document.getElementById('modalBuscaProduto').classList.remove('active'); }
 function renderBuscaProdutos(pagina) {
   pagBuscaProd = pagina || 1;
   const termo = (document.getElementById('inputBuscaProduto').value || '').toLowerCase();
+  const cat = document.getElementById('buscaProdCategoria')?.value || '';
+  const forn = document.getElementById('buscaProdFornecedor')?.value || '';
   let list = produtosCache.slice();
+  if (cat) list = list.filter(p => p.categoria === cat);
+  if (forn) list = list.filter(p => p.fornecedorId === forn);
   if (termo) list = list.filter(p => 
     (p.nome||'').toLowerCase().includes(termo) || 
     (p.sku||'').toLowerCase().includes(termo) || 
@@ -3410,6 +2794,7 @@ function adicionarItemPorId(id) {
   else editandoPedidoItens.push({
     produtoId: id, qtd: 1, precoUnit: prod.venda, descontoPerc: 0,
     nomeSnapshot: prod.nome, skuSnapshot: prod.sku, unidadeSnapshot: prod.unidade || 'un',
+    dimensao: prod.tamanho || '',
     comprado: false, recebido: false
   });
   renderItensPedido();
@@ -3757,10 +3142,12 @@ function montarHTMLComanda(p, c) {
     const desc = parseFloat(i.descontoPerc) || 0;
     const sub = i.precoUnit * i.qtd;
     const subFinal = sub * (1 - desc/100);
+    const dim = i.dimensao || (prod ? (prod.tamanho||'') : '');
+    const nomeComDim = dim ? `${nome} (${dim})` : nome;
     return `<tr>
       <td style="${cel}">${escapeHtml(sku)}</td>
       <td style="${cel}">${String(i.qtd).padStart(2,'0')} ${escapeHtml(un)}</td>
-      <td style="${cel}">${escapeHtml(nome)}</td>
+      <td style="${cel}">${escapeHtml(nomeComDim)}</td>
       <td style="${cel}">${formatarMoeda(i.precoUnit)}</td>
       <td style="${cel}">${formatarMoeda(sub)}</td>
       <td style="${cel}">${desc > 0 ? desc.toFixed(2) : ''}</td>
@@ -4164,7 +3551,6 @@ function abrirEtiquetasLote() {
   let html = '<div class="etiquetas-folha">';
   produtos.forEach((p, i) => {
     const ean = p.ean || gerarEANInternoUnico();
-    const usarCode128 = p.eanInterno || !/^\d{13}$/.test(ean);
     html += `
       <div class="etiqueta-item">
         <div class="etq-empresa">HONG DECOR</div>
@@ -4214,6 +3600,52 @@ filtrarProdutosEstoque = function() {
 };
 
 /* =========================================================
+   DASHBOARD
+   ========================================================= */
+function renderDashboard() {
+  const ini = document.getElementById('dashIni')?.value;
+  const fim = document.getElementById('dashFim')?.value;
+  let vendasMes = pedidosCache.filter(p => p.status === 'venda');
+  if (ini) vendasMes = vendasMes.filter(p => p.data >= ini);
+  if (fim) vendasMes = vendasMes.filter(p => p.data <= fim);
+  if (!ini && !fim) {
+    const mesAtual = hojeLocalISO().slice(0,7);
+    vendasMes = vendasMes.filter(p => dataLocalDeISO(p.data).slice(0,7) === mesAtual);
+  }
+  
+  const propAbertas = pedidosCache.filter(p => p.status === 'proposta');
+  const fatMes = vendasMes.reduce((s,p) => s + (p.faturamentoReal !== undefined ? p.faturamentoReal : p.total), 0);
+  const baixo = produtosCache.filter(p => p.estoque <= p.min).length;
+  document.getElementById('dashCards').innerHTML = `
+    <div class="card"><h3>Faturamento (Período)</h3><div class="value green">R$ ${formatarMoeda(fatMes)}</div></div>
+    <div class="card"><h3>Vendas (Período)</h3><div class="value">${vendasMes.length}</div></div>
+    <div class="card"><h3>Propostas Abertas</h3><div class="value" style="color:#667eea">${propAbertas.length}</div></div>
+    <div class="card"><h3>Produtos</h3><div class="value">${produtosCache.length}</div></div>
+    <div class="card"><h3>Alerta Estoque</h3><div class="value" style="color:#ef4444">${baixo}</div></div>`;
+  const tv = {};
+  vendasMes.forEach(p => { tv[p.vendedor] = (tv[p.vendedor]||0) + (p.faturamentoReal !== undefined ? p.faturamentoReal : p.total); });
+  const tvArr = Object.entries(tv).sort((a,b) => b[1]-a[1]).slice(0,5);
+  document.getElementById('topVendedores').innerHTML = tvArr.length ? `<table>${tvArr.map((v,i) => `<tr><td>${i+1}º</td><td>${escapeHtml(v[0])}</td><td style="text-align:right; font-weight:bold">R$ ${formatarMoeda(v[1])}</td></tr>`).join('')}</table>` : '<div class="empty">Sem vendas neste período.</div>';
+  const zer = produtosCache.filter(p => p.estoque <= 0);
+  document.getElementById('produtosZerados').innerHTML = zer.length ? `<table>${zer.slice(0,10).map(p => `<tr><td>${escapeHtml(p.nome)}</td><td style="text-align:right; color:var(--danger); font-weight:bold">${p.estoque}</td></tr>`).join('')}</table>` : '<div class="empty">Nenhum produto zerado. 🎉</div>';
+  const estoqueBaixo = produtosCache.filter(p => p.estoque > 0 && p.estoque <= p.min);
+  document.getElementById('produtosEstoqueBaixo').innerHTML = estoqueBaixo.length ? `<table>${estoqueBaixo.slice(0,10).map(p => `<tr><td>${escapeHtml(p.nome)}</td><td style="text-align:right; color:var(--warn); font-weight:bold">${p.estoque}</td></tr>`).join('')}</table>` : '<div class="empty">Nenhum produto com estoque baixo. 🎉</div>';
+  const sobEnc = {};
+  pedidosCache.filter(p => p.status === 'venda' && p.modalidade === 'sob_encomenda').forEach(p => {
+    (p.itens||[]).forEach(it => {
+      if (it.recebido) return;
+      const k = it.produtoId;
+      const nome = it.nomeSnapshot || (produtosCache.find(x => x.id === it.produtoId)||{}).nome || k;
+      if (!sobEnc[k]) sobEnc[k] = { nome, qtd: 0, comprado: 0 };
+      sobEnc[k].qtd += it.qtd;
+      if (it.comprado) sobEnc[k].comprado += it.qtd;
+    });
+  });
+  const seArr = Object.values(sobEnc);
+  document.getElementById('produtosSobEncomenda').innerHTML = seArr.length ? `<table><thead><tr><th>Produto</th><th style="text-align:right">A comprar</th><th style="text-align:right">Já comprado</th></tr></thead><tbody>${seArr.map(p => `<tr><td>${escapeHtml(p.nome)}</td><td style="text-align:right; color:var(--danger); font-weight:bold">${p.qtd - p.comprado}</td><td style="text-align:right; color:var(--success)">${p.comprado}</td></tr>`).join('')}</tbody></table>` : '<div class="empty">Nenhum item pendente. 🎉</div>';
+}
+
+/* =========================================================
    ATALHOS / INICIALIZAÇÃO
    ========================================================= */
 document.addEventListener('keydown', function(e) {
@@ -4233,6 +3665,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const frTel = document.getElementById('frTelefone'); if (frTel) frTel.addEventListener('input', () => mascaraTelefone(frTel));
   const btnNovoProd = document.querySelector('button[onclick="novoProduto()"]');
   if (btnNovoProd) btnNovoProd.addEventListener('click', () => setTimeout(gerarEANNoFormulario, 50));
+  criarCategoriasIniciais().catch(err => console.warn('Erro ao criar categorias iniciais:', err));
 });
 </script>
 </body>
